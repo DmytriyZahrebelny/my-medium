@@ -1,16 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
 const App: React.FC = () => {
 	return (
 		<div className='App' id='sdsdfs'>
 			<header className='App-header'>
-				<img src={logo} className='App-logo' alt='logo' />
 				<p>Edit</p>
 				<a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
 					Learn React
 				</a>
+				<p className='sdfsf'>sdf</p>
 			</header>
 		</div>
 	);

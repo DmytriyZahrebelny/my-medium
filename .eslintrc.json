@@ -1,0 +1,60 @@
+{
+	"root": true,
+	"plugins": ["@typescript-eslint", "jest", "react"],
+	"parser": "@typescript-eslint/parser",
+	"env": {
+		"es6": true,
+		"browser": true,
+		"jest/globals": true
+	},
+	"extends": ["airbnb", "plugin:prettier/recommended", "plugin:@typescript-eslint/eslint-recommended"],
+	"rules": {
+		"no-param-reassign": [2, { "props": false }],
+		"react/jsx-filename-extension": [
+			1,
+			{ "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+		],
+		"jsx-a11y/label-has-associated-control": "off",
+		"indent": [2, "tab", { "SwitchCase": 1, "VariableDeclarator": 1 }],
+		"no-tabs": 0,
+		"react/prop-types": 0,
+		"react/jsx-indent": [2, "tab"],
+		"react/jsx-indent-props": [2, "tab"],
+		"react/button-has-type": "off",
+		"no-use-before-define": "off",
+		"import/prefer-default-export": "off",
+    "quotes": [2, "single", { "avoidEscape": true }],
+		"import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+		"react/jsx-props-no-spreading": "off",
+		"no-useless-escape": 0
+	},
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"paths": ["src"],
+				"extensions": [".js", ".jsx", ".ts", ".tsx"]
+			}
+		}
+	},
+	"parserOptions": {
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"jsx": true
+		}
+	},
+	"overrides": [
+		{
+			"files": ["**/*.d.ts"],
+			"rules": {
+				"spaced-comment": "off"
+			}
+		},
+		{
+			"files": ["**/*.ts", "**/*.tsx"],
+			"rules": {
+				"no-unused-vars": "off",
+				"@typescript-eslint/no-unused-vars": "error"
+			}
+		}
+	]
+}

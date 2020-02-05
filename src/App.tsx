@@ -1,14 +1,17 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Header from './Header/Header';
+
+const Signin = () => <div>Sign In</div>;
+const Signup = () => <div>Sign Up</div>;
 
 const App: React.FC = () => (
-	<div className='App' id='sdsdfs'>
-		<header className='App-header'>
-			<p>Edit</p>
-			<a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-				Learn React
-			</a>
-			<p className='sdfsf'>sdf</p>
-		</header>
+	<div>
+		<Header />
+		<Switch>
+			<Route path='/signin' component={Signin} />
+			<Route path='/signup' component={Signup} />
+		</Switch>
 	</div>
 );
 

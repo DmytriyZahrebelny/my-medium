@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Header from './components/Header/Header';
+import Header from './components/components/Header/Header';
 import Signin from './components/Auth/Signin/Signin';
 
 const Signup = () => <div>Sign Up</div>;

@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Header from './components/components/Header/Header';
-import Signin from './components/Auth/Signin/Signin';
+import SignIn from './components/Auth/Signin/SignIn';
+import SignUp from './components/Auth/SignUp/SignUp';
 import { authApi } from './components/Auth/authApi';
 import * as action from './store/AuthStore';
-
-const Signup = () => <div>Sign Up</div>;
 
 const App: React.FC = () => {
 	const dispatch = useDispatch();
@@ -30,8 +29,8 @@ const App: React.FC = () => {
 		<div>
 			<Header />
 			<Switch>
-				<Route path='/signin' component={Signin} />
-				<Route path='/signup' component={Signup} />
+				<Route path='/signin' component={SignIn} />
+				<Route path='/signup' component={SignUp} />
 			</Switch>
 		</div>
 	);

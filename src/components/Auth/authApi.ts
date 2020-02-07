@@ -20,20 +20,21 @@ export const authApi = {
 			}
 
 			const data = await response.json();
-
+			window.localStorage.setItem('__token', data.user.token);
 			return data;
 		} catch ({ errors }) {
 			const errorValue = Object.keys(errors)[0];
 			const errorMessage = errorValue + errors[errorValue][0];
+
 			return errorMessage;
 		}
 	},
-	async getViewerData() {
+	async getViewerData(token: string) {
 		const response = await fetch('/api/user', {
 			method: 'GET',
-			// headers: {
-			// 	Authorization: `Token ${token}`,
-			// },
+			headers: {
+				Authorization: `Token ${token}`,
+			},
 		});
 
 		const data = await response.json();

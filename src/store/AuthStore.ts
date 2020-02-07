@@ -20,7 +20,6 @@ const initialState: IAuth = { user: null };
 
 export const loginAction = (payload: IAuth) => typedAction('auth/LOGIN', payload);
 export const logoutAction = () => typedAction('auth/LOGOUT');
-export const logout = () => typedAction('auth/LOGOUT');
 
 type AuthACtion = ReturnType<typeof loginAction | typeof logoutAction>;
 

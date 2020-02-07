@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Header from './components/components/Header/Header';
 import Signin from './components/Auth/Signin/Signin';
+import { authApi } from './components/Auth/authApi';
+import * as action from './store/AuthStore';
 
 const Signup = () => <div>Sign Up</div>;
 
 const App: React.FC = () => {
+	const dispatch = useDispatch();
+	useEffect(() => {
+		try {
+			const token = window.localStorage.getItem('__token');
+			if (token) {
+				const fetchViewerData = async () => {
+					const response = await authApi.getViewerData(token);
+					dispatch(action.loginAction(response));
+				};
+
+				fetchViewerData();
+			}
+		} catch (error) {
+			window.localStorage.removeItem('__token');
+		}
+	});
+
 	return (
 		<div>
 			<Header />

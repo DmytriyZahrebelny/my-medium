@@ -1,18 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Header from './Header/Header';
+import { useDispatch } from 'react-redux';
+import Header from './components/Header/Header';
+import SignIn from './components/Auth/Signin/SignIn';
+import SignUp from './components/Auth/SignUp/SignUp';
+import { authApi } from './components/Auth/authApi';
+import * as action from './store/AuthStore';
 
-const Signin = () => <div>Sign In</div>;
-const Signup = () => <div>Sign Up</div>;
+const App: React.FC = () => {
+	const dispatch = useDispatch();
+	useEffect(() => {
+		try {
+			const token = window.localStorage.getItem('__token');
+			if (token) {
+				const fetchViewerData = async () => {
+					const response = await authApi.getViewerData(token);
+					dispatch(action.loginAction(response));
+				};
 
-const App: React.FC = () => (
-	<div>
-		<Header />
-		<Switch>
-			<Route path='/signin' component={Signin} />
-			<Route path='/signup' component={Signup} />
-		</Switch>
-	</div>
-);
+				fetchViewerData();
+			}
+		} catch (error) {
+			window.localStorage.removeItem('__token');
+		}
+	});
+
+	return (
+		<div>
+			<Header />
+			<Switch>
+				<Route path='/signin' component={SignIn} />
+				<Route path='/signup' component={SignUp} />
+			</Switch>
+		</div>
+	);
+};
 
 export default App;

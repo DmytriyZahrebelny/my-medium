@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Header from './components/components/Header/Header';
+import Header from './components/Header/Header';
 import SignIn from './components/Auth/Signin/SignIn';
 import SignUp from './components/Auth/SignUp/SignUp';
 import { authApi } from './components/Auth/authApi';

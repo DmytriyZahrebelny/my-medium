@@ -5,7 +5,7 @@ interface IAuth {
 		updatedAt: string;
 		username: string;
 		bio: any;
-		image: string;
+		image: string | null;
 		token: string;
 	} | null;
 }

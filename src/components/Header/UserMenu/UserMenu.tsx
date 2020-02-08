@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../../store/AuthStore';
 import './userMenu.sass';
 
 export interface IUserMenu {
@@ -18,8 +20,12 @@ export interface IUserMenu {
 const userLogo: string = 'https://cdn-images-1.medium.com/fit/c/50/50/0*7TqUrB-WnHVdrBF5.';
 
 const UserMenu: React.FC<IUserMenu> = ({ user }) => {
+	const dispatch = useDispatch();
 	const mailSymbolIndex = user.email.split('').findIndex(el => el === '@');
 	const emailText = user.email.slice(0, mailSymbolIndex);
+	const logoutClick = () => {
+		dispatch(actions.logoutAction());
+	};
 
 	return (
 		<div className='user-menu'>
@@ -36,7 +42,9 @@ const UserMenu: React.FC<IUserMenu> = ({ user }) => {
 			</div>
 			<div className='user-menu__links'>
 				<Link to='/settings'>Settings</Link>
-				<Link to='/'>Sign Out</Link>
+				<Link onClick={logoutClick} to='/'>
+					Sign Out
+				</Link>
 			</div>
 		</div>
 	);

@@ -34,6 +34,7 @@ export default (state = initialState, action: AuthACtion): IAuth => {
 		case AuthConstants.LOGIN:
 			return action.payload;
 		case AuthConstants.LOGOUT:
+			window.localStorage.removeItem('__token');
 			return { user: null };
 		default:
 			return state;

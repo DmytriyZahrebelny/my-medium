@@ -10,10 +10,10 @@ const userLogo: string = 'https://cdn-images-1.medium.com/fit/c/32/32/0*7TqUrB-W
 
 const Header: React.FC = () => {
 	const [isUserMenu, setUserMenu] = useState<boolean>(false);
+	const [isSearch, setSearchStete] = useState<boolean>(false);
 	const user = useSelector((state: RootState) => state.authStore.user);
-	const onUserClick = (): void => {
-		setUserMenu(!isUserMenu);
-	};
+	const onUserClick = (): void => setUserMenu(!isUserMenu);
+	const onSearchClick = (): void => setSearchStete(!isSearch);
 
 	useEffect(() => {
 		const removeUserMenu = (evt: any) => {
@@ -34,10 +34,16 @@ const Header: React.FC = () => {
 				</Link>
 				<div className='header__menu'>
 					{user ? (
-						<div onClick={onUserClick} onKeyDown={onUserClick} className='header__user' role='button' tabIndex={0}>
-							<img className='header__icon' src={user.image || userLogo} alt='user' />
-							{isUserMenu ? <UserMenu user={user} /> : null}
-						</div>
+						<>
+							<button type='button' className='header__search' onClick={onSearchClick}>
+								<Icon name='search' size={30} />
+							</button>
+							{isSearch ? <input className='header__search-input' type='text' placeholder='Search Medium' /> : null}
+							<button onClick={onUserClick} className='header__user'>
+								<img className='header__icon' src={user.image || userLogo} alt='user' />
+								{isUserMenu ? <UserMenu user={user} /> : null}
+							</button>
+						</>
 					) : (
 						<>
 							<Link className='header__link' to='/signin'>

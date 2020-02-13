@@ -30,8 +30,8 @@ export const authApi = {
 
 			return data;
 		} catch ({ errors }) {
-			const errorsFields = Object.keys(errors);
-			const errorsMessages = errorsFields.map(err => `${err} ${errors[err]}`);
+			const errorsFields: string[] = Object.keys(errors);
+			const errorsMessages: string[] = errorsFields.map(err => `${err} ${errors[err]}`);
 			return errorsMessages;
 		}
 	},

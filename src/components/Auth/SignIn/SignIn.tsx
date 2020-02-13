@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import TextField from '../../components/FormControls/TextField';
 import ErrorsMessages from '../components/ErrorsMessages';
-import { authApi } from '../authApi';
 import * as actions from '../../../store/AuthStore';
+import { RootState } from '../../../store/configureStore';
 import '../auth.sass';
 
 const validate = (value: any) => {
@@ -22,22 +22,16 @@ const validate = (value: any) => {
 };
 
 const SignIn: React.FC = () => {
-	const [errorsMesages, setError] = useState<null | string[]>(null);
 	const dispatch = useDispatch();
+	const errorsMesages: string[] | null = useSelector((state: RootState) => state.authStore.errorsMesages);
 	const { handleSubmit, getFieldProps, errors, touched } = useFormik({
 		initialValues: {
 			email: '',
 			password: '',
 		},
 		validate,
-		onSubmit: async values => {
-			const data: any = await authApi.signIn(values);
-
-			if (data instanceof Array) {
-				setError(data);
-			} else {
-				dispatch(actions.loginAction(data));
-			}
+		onSubmit: values => {
+			dispatch(actions.signInAsyncAction(values));
 		},
 	});
 

@@ -1,44 +1,12 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useFormik } from 'formik';
 import TextField from '../../components/FormControls/TextField';
 import ErrorsMessages from '../components/ErrorsMessages';
-import * as actions from '../../../store/AuthStore';
-import { RootState } from '../../../store/configureStore';
+import { useAuthHooks } from '../useAuthHooks';
 import '../auth.sass';
 
-const validate = (value: any) => {
-	const errors: any = {};
-
-	if (!value.username) {
-		errors.username = 'required';
-	}
-
-	if (!value.email) {
-		errors.email = 'required';
-	}
-
-	if (!value.password) {
-		errors.password = 'required';
-	}
-
-	return errors;
-};
-
 const SignUp: React.FC = () => {
-	const dispatch = useDispatch();
-	const errorsMesages: string[] | null = useSelector((state: RootState) => state.authStore.errorsMesages);
-	const { handleSubmit, getFieldProps, errors, touched } = useFormik({
-		initialValues: {
-			username: '',
-			email: '',
-			password: '',
-		},
-		validate,
-		onSubmit: async values => {
-			dispatch(actions.signUpAsyncAction(values));
-		},
-	});
+	const { errorsMesages, signUpForm } = useAuthHooks();
+	const { handleSubmit, getFieldProps, errors, touched } = signUpForm;
 
 	return (
 		<div className='sign-in'>

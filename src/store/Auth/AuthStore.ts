@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { authApi } from '../components/Auth/authApi';
+import { authApi } from '../../components/Auth/authApi';
 
 export interface IAuth {
 	user: {
@@ -92,9 +92,9 @@ export const signUpAsyncAction = (formData: ISignUp) => async (dispatch: Dispatc
 	}
 };
 
-type AuthACtion = ReturnType<typeof loginAction | typeof logoutAction | typeof authErrorAction>;
+type AuthAction = ReturnType<typeof loginAction | typeof logoutAction | typeof authErrorAction>;
 
-export default (state = initialState, action: AuthACtion): IAuth => {
+export default (state = initialState, action: AuthAction): IAuth => {
 	switch (action.type) {
 		case AuthConstants.LOGIN:
 			return { ...state, ...action.payload };

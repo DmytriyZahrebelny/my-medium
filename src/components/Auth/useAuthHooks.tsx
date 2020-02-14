@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
-import * as actions from '../../store/AuthStore';
+import * as actions from '../../store/Auth/AuthStore';
 import { RootState } from '../../store/configureStore';
 
 const signUpValidate = (value: any) => {

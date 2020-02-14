@@ -13,6 +13,7 @@ export interface IAuth {
 		token: string;
 	} | null;
 	errorsMesages: string[] | null;
+	token: string | null;
 }
 
 interface ILogonResponse {
@@ -51,7 +52,7 @@ export function typedAction(type: string, payload?: any) {
 	return { type, payload };
 }
 
-const initialState: IAuth = { user: null, errorsMesages: null };
+const initialState: IAuth = { user: null, errorsMesages: null, token: null };
 
 const loginAction = (payload: ILogonResponse) => typedAction(ActionType.LOGIN, payload);
 export const logoutAction = () => {
@@ -97,7 +98,7 @@ type AuthAction = ReturnType<typeof loginAction | typeof logoutAction | typeof a
 export default (state = initialState, action: AuthAction): IAuth => {
 	switch (action.type) {
 		case ActionType.LOGIN:
-			return { ...state, ...action.payload };
+			return { ...state, ...action.payload, token: action.payload.user.token };
 		case ActionType.LOGOUT:
 			return { ...state, user: null };
 		case ActionType.ERRORS:

@@ -1,24 +1,33 @@
 import { Dispatch } from 'redux';
 import { articlesApi } from '../../components/Articles/articlesApi';
 
-enum ArticlesConstants {
-	ALL_ARTICLES,
+interface IAllArticles {
+	articles: object[];
+	articlesCount: number;
 }
 
-const initialState: any = {
-	articles: null,
+interface IState {
+	allArticles: IAllArticles | null;
+}
+
+enum ActionType {
+	ALL_ARTICLES = 'ALL_ARTICLES',
+}
+
+const initialState: IState = {
+	allArticles: null,
 };
 
-export function typedAction<T extends number>(type: T): { type: T };
-export function typedAction<T extends number, P extends any>(type: T, payload: P): { type: T; payload: P };
+export function typedAction<T extends string>(type: T): { type: T };
+export function typedAction<T extends string, P extends any>(type: T, payload: P): { type: T; payload: P };
 export function typedAction(type: number, payload?: any) {
 	return { type, payload };
 }
 
-const allArticlesAction = (payload: any) => typedAction(ArticlesConstants.ALL_ARTICLES, payload);
+const allArticlesAction = (payload: IAllArticles) => typedAction(ActionType.ALL_ARTICLES, payload);
 
 export const allArticlesAsyncAction = () => async (dispatch: Dispatch) => {
-	const response = await articlesApi.allArticles();
+	const response: IAllArticles = await articlesApi.allArticles();
 
 	dispatch(allArticlesAction(response));
 };
@@ -27,8 +36,8 @@ type articlesAction = ReturnType<typeof allArticlesAction>;
 
 export default (state = initialState, action: articlesAction) => {
 	switch (action.type) {
-		case ArticlesConstants.ALL_ARTICLES:
-			return { ...state, ...action.payload };
+		case ActionType.ALL_ARTICLES:
+			return { ...state, allArticles: action.payload };
 		default:
 			return state;
 	}

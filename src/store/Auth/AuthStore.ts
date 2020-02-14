@@ -39,26 +39,26 @@ interface ISignUp {
 	password: string;
 }
 
-enum AuthConstants {
-	LOGIN,
-	LOGOUT,
-	ERRORS,
+enum ActionType {
+	LOGIN = 'LOGIN',
+	LOGOUT = 'LOGOUT',
+	ERRORS = 'ERRORS',
 }
 
-export function typedAction<T extends number>(type: T): { type: T };
-export function typedAction<T extends number, P extends any>(type: T, payload: P): { type: T; payload: P };
-export function typedAction(type: number, payload?: any) {
+export function typedAction<T extends string>(type: T): { type: T };
+export function typedAction<T extends string, P extends any>(type: T, payload: P): { type: T; payload: P };
+export function typedAction(type: string, payload?: any) {
 	return { type, payload };
 }
 
 const initialState: IAuth = { user: null, errorsMesages: null };
 
-const loginAction = (payload: ILogonResponse) => typedAction(AuthConstants.LOGIN, payload);
+const loginAction = (payload: ILogonResponse) => typedAction(ActionType.LOGIN, payload);
 export const logoutAction = () => {
 	window.localStorage.removeItem('__token');
-	return typedAction(AuthConstants.LOGOUT);
+	return typedAction(ActionType.LOGOUT);
 };
-export const authErrorAction = (payload: any) => typedAction(AuthConstants.ERRORS, payload);
+export const authErrorAction = (payload: any) => typedAction(ActionType.ERRORS, payload);
 
 export const loginAsyncAction = () => async (dispatch: Dispatch) => {
 	try {
@@ -96,11 +96,11 @@ type AuthAction = ReturnType<typeof loginAction | typeof logoutAction | typeof a
 
 export default (state = initialState, action: AuthAction): IAuth => {
 	switch (action.type) {
-		case AuthConstants.LOGIN:
+		case ActionType.LOGIN:
 			return { ...state, ...action.payload };
-		case AuthConstants.LOGOUT:
+		case ActionType.LOGOUT:
 			return { ...state, user: null };
-		case AuthConstants.ERRORS:
+		case ActionType.ERRORS:
 			return { ...state, errorsMesages: action.payload };
 		default:
 			return state;

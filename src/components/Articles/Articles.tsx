@@ -10,7 +10,7 @@ const Articles = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const dispatch = useDispatch();
 	const articles = useSelector((state: RootState) => state.articlesStore.allArticles.articles);
-
+	console.log(articles);
 	useEffect(() => {
 		if (loading) {
 			dispatch(articlesAction.allArticlesAsyncAction(numberPage));

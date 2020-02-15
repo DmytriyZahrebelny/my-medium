@@ -2,6 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './articlesList.sass';
 
+interface IArticles {
+	title: string;
+	slug: string;
+	author: {
+		image: string;
+		username: string;
+	};
+	createdAt: string;
+	body: string;
+}
+
 interface IArticlesProps {
 	articles: any[];
 	lastArticlesLinkRef: any;
@@ -10,8 +21,8 @@ interface IArticlesProps {
 const ArticlesList: React.FC<IArticlesProps> = ({ articles, lastArticlesLinkRef }) => {
 	return (
 		<>
-			{articles.map(({ title, slug, author, createdAt, body }: any) => (
-				<Link ref={lastArticlesLinkRef} className='article' to={`/posts/:${slug}`} key={slug}>
+			{articles.map(({ title, slug, author, createdAt, body }: IArticles) => (
+				<Link ref={lastArticlesLinkRef} className='article' to={`/posts/${slug}`} key={slug}>
 					<div className='article__author'>
 						<img className='article__author-img' src={author.image} alt='img' />
 						<div>

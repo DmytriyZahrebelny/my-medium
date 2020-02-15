@@ -1,31 +1,46 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import ArticlesList from './ArticlesList/ArticlesList';
 import { RootState } from '../../store/configureStore';
+import * as articlesAction from '../../store/Articles/ArticlesStore';
 import './articles.sass';
 
 const Articles = () => {
-	const allArticles = useSelector((state: RootState) => state.articlesStore.allArticles);
+	const [numberPage, setNumberPage] = useState<number>(1);
+	const [loading, setLoading] = useState<boolean>(false);
+	const dispatch = useDispatch();
+	const articles = useSelector((state: RootState) => state.articlesStore.allArticles.articles);
 
-	if (!allArticles?.articles) {
+	useEffect(() => {
+		if (loading) {
+			dispatch(articlesAction.allArticlesAsyncAction(numberPage));
+			setLoading(false);
+		}
+	}, [numberPage, dispatch, loading]);
+
+	const observer: any = useRef();
+	const lastArticlesLinkRef = useCallback((node: HTMLElement) => {
+		if (observer.current) {
+			observer.current.disconnect();
+		}
+		observer.current = new IntersectionObserver(entries => {
+			if (entries[0].isIntersecting) {
+				setLoading(true);
+				setNumberPage(prevNumberPage => prevNumberPage + 1);
+			}
+		});
+		if (node) {
+			observer.current.observe(node);
+		}
+	}, []);
+
+	if (!articles.length) {
 		return null;
 	}
 
 	return (
 		<div className='articles'>
-			{allArticles.articles.map(({ title, slug, author, createdAt, body }: any) => (
-				<Link className='articles__link' to={`/posts/:${slug}`} key={slug}>
-					<div className='articles__author'>
-						<img className='articles__author-img' src={author.image} alt='img' />
-						<div>
-							<p className='articles__author-name'>{author.username}</p>
-							<p className='articles__author-data'>{new Date(createdAt).toDateString()}</p>
-						</div>
-					</div>
-					<h2 className='articles__name'>{title}</h2>
-					<p className='articles__text'>{body}</p>
-				</Link>
-			))}
+			<ArticlesList articles={articles} lastArticlesLinkRef={lastArticlesLinkRef} />
 		</div>
 	);
 };

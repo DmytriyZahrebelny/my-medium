@@ -2,12 +2,11 @@ import { Dispatch } from 'redux';
 import { articlesApi } from '../../components/Articles/articlesApi';
 
 interface IAllArticles {
-	articles: object[];
-	articlesCount: number;
+	articles: object[] | [];
 }
 
 interface IState {
-	allArticles: IAllArticles | null;
+	allArticles: IAllArticles;
 }
 
 enum ActionType {
@@ -15,7 +14,9 @@ enum ActionType {
 }
 
 const initialState: IState = {
-	allArticles: null,
+	allArticles: {
+		articles: [],
+	},
 };
 
 export function typedAction<T extends string>(type: T): { type: T };
@@ -26,9 +27,8 @@ export function typedAction(type: number, payload?: any) {
 
 const allArticlesAction = (payload: IAllArticles) => typedAction(ActionType.ALL_ARTICLES, payload);
 
-export const allArticlesAsyncAction = () => async (dispatch: Dispatch) => {
-	const response: IAllArticles = await articlesApi.allArticles();
-
+export const allArticlesAsyncAction = (page: number = 0) => async (dispatch: Dispatch) => {
+	const response: IAllArticles = await articlesApi.allArticles(page);
 	dispatch(allArticlesAction(response));
 };
 
@@ -37,7 +37,10 @@ type articlesAction = ReturnType<typeof allArticlesAction>;
 export default (state = initialState, action: articlesAction) => {
 	switch (action.type) {
 		case ActionType.ALL_ARTICLES:
-			return { ...state, allArticles: action.payload };
+			return {
+				...state,
+				allArticles: { ...state.allArticles, articles: [...state.allArticles.articles, ...action.payload.articles] },
+			};
 		default:
 			return state;
 	}

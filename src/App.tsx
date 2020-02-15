@@ -16,7 +16,7 @@ const App: React.FC = () => {
 	useEffect(() => {
 		dispatch(authAction.loginAsyncAction());
 		dispatch(articlesAction.allArticlesAsyncAction());
-	}, [token, dispatch]);
+	}, [dispatch]);
 
 	return (
 		<>

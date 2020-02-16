@@ -16,8 +16,6 @@ const TextareaField: React.FC<ITextFieldProps> = ({
 	placeholder,
 	className = 'textarea-field',
 }) => {
-	console.log(input);
-	console.log(touched[input.name]);
 	return (
 		<div className={className}>
 			<textarea {...input} placeholder={placeholder} />

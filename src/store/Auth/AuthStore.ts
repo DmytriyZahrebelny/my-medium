@@ -47,7 +47,10 @@ enum ActionType {
 }
 
 export function typedAction<T extends string>(type: T): { type: T };
-export function typedAction<T extends string, P extends any>(type: T, payload: P): { type: T; payload: P };
+export function typedAction<T extends string, P extends any>(
+	type: T,
+	payload: P
+): { type: T; payload: P };
 export function typedAction(type: string, payload?: any) {
 	return { type, payload };
 }
@@ -100,7 +103,7 @@ export default (state = initialState, action: AuthAction): IAuth => {
 		case ActionType.LOGIN:
 			return { ...state, ...action.payload, token: action.payload.user.token };
 		case ActionType.LOGOUT:
-			return { ...state, user: null };
+			return { ...state, user: null, token: null };
 		case ActionType.ERRORS:
 			return { ...state, errorsMesages: action.payload };
 		default:

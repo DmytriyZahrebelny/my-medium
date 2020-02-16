@@ -1,7 +1,10 @@
 import React from 'react';
 import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
 import TextField from '../components/FormControls/TextField';
 import TextareaField from '../components/FormControls/TextareaField';
+import { RootState } from '../../store/configureStore';
+import { newPostApi } from './newPostApi';
 import './newPost.sass';
 
 const validate = (value: any) => {
@@ -15,23 +18,26 @@ const validate = (value: any) => {
 		errors.description = 'required';
 	}
 
-	if (!value.textarea) {
-		errors.textarea = 'required';
+	if (!value.body) {
+		errors.body = 'required';
 	}
 
 	return errors;
 };
 
 const NewPost: React.FC = () => {
+	const token: string | null = useSelector((state: RootState) => state.authStore.token);
 	const { handleSubmit, getFieldProps, touched, errors } = useFormik({
 		initialValues: {
 			title: '',
 			description: '',
-			textarea: '',
+			body: '',
 		},
 		validate,
-		onSubmit: values => {
-			console.log(values);
+		onSubmit: async values => {
+			const response = await newPostApi.createPost(values, token);
+
+			console.log(response);
 		},
 	});
 
@@ -54,7 +60,7 @@ const NewPost: React.FC = () => {
 				/>
 				<div className='new-post__textarea'>
 					<TextareaField
-						input={getFieldProps('textarea')}
+						input={getFieldProps('body')}
 						errors={errors}
 						touched={touched}
 						placeholder='Write your article'

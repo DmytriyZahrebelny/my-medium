@@ -24,14 +24,14 @@ const App: React.FC = () => {
 			<Header />
 			{!token ? (
 				<Switch>
-					<Route exact path='/' component={Articles} />
+					<Route exact path={['/', '/posts']} component={Articles} />
 					<Route path='/signin' component={SignIn} />
 					<Route path='/signup' component={SignUp} />
 					<Route path='/posts/:id' component={ArticlePage} />
 				</Switch>
 			) : (
 				<Switch>
-					<Route path='/' component={Articles} />
+					<Route exact path={['/', '/posts']} component={Articles} />
 					<Route path='/posts/:id' component={ArticlePage} />
 				</Switch>
 			)}

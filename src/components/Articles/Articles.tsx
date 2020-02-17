@@ -23,12 +23,14 @@ const Articles = () => {
 		if (observer.current) {
 			observer.current.disconnect();
 		}
+
 		observer.current = new IntersectionObserver(entries => {
 			if (entries[0].isIntersecting) {
 				setLoading(true);
-				setNumberPage(prevNumberPage => prevNumberPage + 1);
+				setNumberPage((prevNumberPage: number) => prevNumberPage + 1);
 			}
 		});
+
 		if (node) {
 			observer.current.observe(node);
 		}

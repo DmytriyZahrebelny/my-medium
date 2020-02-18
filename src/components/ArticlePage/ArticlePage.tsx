@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { RootState } from '../../../store/configureStore';
+import { useRouteMatch } from 'react-router-dom';
+import { RootState } from '../../store/configureStore';
 import './articlePage.sass';
 
 interface IArticleData {
@@ -16,15 +16,16 @@ interface IArticleData {
 }
 
 const ArticlePage: React.FC = () => {
-	const allArticles: any[] = useSelector((state: RootState) => state.articlesStore.allArticles.articles);
-	const { location } = useHistory();
+	const allArticles: any[] = useSelector(
+		(state: RootState) => state.articlesStore.allArticles.articles
+	);
 
+	const { params } = useRouteMatch();
 	if (!allArticles.length) {
 		return null;
 	}
 
-	const id: string = location.pathname.slice(7);
-	const articlleData = allArticles.find((el: IArticleData) => el.slug === id);
+	const articlleData = allArticles.find((el: IArticleData) => el.slug === params.id);
 	const { title, body, createdAt, author }: IArticleData = articlleData;
 	return (
 		<>

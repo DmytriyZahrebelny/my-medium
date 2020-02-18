@@ -1,11 +1,17 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import TextField from '../components/FormControls/TextField';
 import TextareaField from '../components/FormControls/TextareaField';
-import { RootState } from '../../store/configureStore';
-import { newPostApi } from './newPostApi';
+import * as actions from '../../store/Articles/ArticlesStore';
 import './newPost.sass';
+
+interface INewPost {
+	title: 'string';
+	description: 'string';
+	body: 'string';
+}
 
 const validate = (value: any) => {
 	const errors: any = {};
@@ -26,7 +32,8 @@ const validate = (value: any) => {
 };
 
 const NewPost: React.FC = () => {
-	const token: string | null = useSelector((state: RootState) => state.authStore.token);
+	const dispatch = useDispatch();
+	const history = useHistory();
 	const { handleSubmit, getFieldProps, touched, errors } = useFormik({
 		initialValues: {
 			title: '',
@@ -34,10 +41,9 @@ const NewPost: React.FC = () => {
 			body: '',
 		},
 		validate,
-		onSubmit: async values => {
-			const response = await newPostApi.createPost(values, token);
-
-			console.log(response);
+		onSubmit: async (values: any) => {
+			dispatch(actions.addNewPostAsyncAction(values));
+			history.push('/posts');
 		},
 	});
 

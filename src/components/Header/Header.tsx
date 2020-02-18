@@ -19,10 +19,18 @@ const Header: React.FC = () => {
 				<div className='header__menu'>
 					{user ? (
 						<>
+							<Link className='header__link  header__link--login' to='/'>
+								Home
+							</Link>
+							<Link className='header__link  header__link--login' to='/new-post'>
+								New Post
+							</Link>
 							<button type='button' className='header__search' onClick={onSearchClick}>
 								<Icon name='search' size={30} />
 							</button>
-							{isSearch ? <input className='header__search-input' type='text' placeholder='Search Medium' /> : null}
+							{isSearch ? (
+								<input className='header__search-input' type='text' placeholder='Search Medium' />
+							) : null}
 							<button onClick={onUserClick} className='header__user'>
 								<img className='header__icon' src={user.image || userLogo} alt='user' />
 								{showUserMenu ? <UserMenu user={user} /> : null}

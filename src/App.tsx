@@ -5,7 +5,8 @@ import Header from './components/Header/Header';
 import SignIn from './components/Auth/SignIn/SignIn';
 import SignUp from './components/Auth/SignUp/SignUp';
 import Articles from './components/Articles/Articles';
-import ArticlePage from './components/Articles/ArticlePage/ArticlePage';
+import ArticlePage from './components/ArticlePage/ArticlePage';
+import NewPost from './components/NewPost/NewPost';
 import * as authAction from './store/Auth/AuthStore';
 import * as articlesAction from './store/Articles/ArticlesStore';
 import { RootState } from './store/configureStore';
@@ -33,6 +34,7 @@ const App: React.FC = () => {
 				<Switch>
 					<Route exact path={['/', '/posts']} component={Articles} />
 					<Route path='/posts/:id' component={ArticlePage} />
+					<Route path='/new-post' component={NewPost} />
 				</Switch>
 			)}
 		</>

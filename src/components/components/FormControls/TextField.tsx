@@ -20,7 +20,7 @@ const TextField: React.FC<ITextFieldProps> = ({
 }) => (
 	<div className={className}>
 		<input type={type} {...input} placeholder={placeholder} />
-		{errors[input.name] && touched[input.name] ? <div>{errors.email}</div> : null}
+		{errors[input.name] && touched[input.name] ? <div>{errors[input.name]}</div> : null}
 	</div>
 );
 

@@ -1,4 +1,5 @@
-const limit = (count: number, page: number): string => `limit=${count}&offset=${page ? page * count : 0}`;
+const limit = (count: number, page: number): string =>
+	`limit=${count}&offset=${page ? page * count : 0}`;
 
 export const articlesApi: any = {
 	async allArticles(page: number): Promise<any> {

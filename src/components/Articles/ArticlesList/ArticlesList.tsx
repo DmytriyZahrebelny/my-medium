@@ -1,26 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { IArticlesData, IArticlesProps } from '../interfaces';
 import './articlesList.sass';
-
-interface IArticles {
-	title: string;
-	slug: string;
-	author: {
-		image: string;
-		username: string;
-	};
-	createdAt: string;
-	body: string;
-}
-
-interface IArticlesProps {
-	articles: any[];
-	lastArticlesLinkRef: any;
-}
 
 const ArticlesList: React.FC<IArticlesProps> = ({ articles, lastArticlesLinkRef }) => (
 	<>
-		{articles.map(({ title, slug, author, createdAt, body }: IArticles) => (
+		{articles.map(({ title, slug, author, createdAt, body }: IArticlesData) => (
 			<Link ref={lastArticlesLinkRef} className='article-link' to={`/posts/${slug}`} key={slug}>
 				<div className='article-link__author'>
 					<img className='article-link__author-img' src={author.image} alt='img' />

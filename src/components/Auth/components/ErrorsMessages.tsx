@@ -1,9 +1,6 @@
 import React from 'react';
+import { IErrorsProp } from '../interfaces';
 import './errorsMessages.sass';
-
-interface IErrorsProp {
-	errors: string[];
-}
 
 const ErrorsMessages: React.FC<IErrorsProp> = ({ errors }) => (
 	<ul className='sign-in__auth-error'>

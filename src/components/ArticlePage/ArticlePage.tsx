@@ -2,18 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 import { RootState } from '../../store/configureStore';
+import { IArticleData } from './interfaces';
 import './articlePage.sass';
-
-interface IArticleData {
-	title: string;
-	slug: string;
-	author: {
-		image: string;
-		username: string;
-	};
-	createdAt: string;
-	body: string;
-}
 
 const ArticlePage: React.FC = () => {
 	const allArticles: any[] = useSelector(

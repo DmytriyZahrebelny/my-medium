@@ -13,7 +13,13 @@ const SignIn: React.FC = () => {
 			<h1 className='sign-in__title'>Sign In</h1>
 			{errorsMesages ? <ErrorsMessages errors={errorsMesages} /> : null}
 			<form onSubmit={handleSubmit}>
-				<TextField type='email' input={getFieldProps('email')} errors={errors} touched={touched} placeholder='Email' />
+				<TextField
+					type='email'
+					input={getFieldProps('email')}
+					errors={errors}
+					touched={touched}
+					placeholder='Email'
+				/>
 				<TextField
 					type='password'
 					input={getFieldProps('password')}

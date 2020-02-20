@@ -39,7 +39,9 @@ const signInValidate = (value: any) => {
 export const useAuthHooks = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const errorsMesages: string[] | null = useSelector((state: RootState) => state.authStore.errorsMesages);
+	const errorsMesages: string[] | null = useSelector(
+		(state: RootState) => state.authStore.errorsMesages
+	);
 	const signUpForm = useFormik({
 		initialValues: {
 			username: '',

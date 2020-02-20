@@ -7,12 +7,6 @@ import TextareaField from '../components/FormControls/TextareaField';
 import * as actions from '../../store/Articles/ArticlesStore';
 import './newPost.sass';
 
-interface INewPost {
-	title: 'string';
-	description: 'string';
-	body: 'string';
-}
-
 const validate = (value: any) => {
 	const errors: any = {};
 

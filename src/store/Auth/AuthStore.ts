@@ -1,44 +1,6 @@
 import { Dispatch } from 'redux';
 import { authApi } from '../../components/Auth/authApi';
-
-export interface IAuth {
-	user: {
-		id: number;
-		email: string;
-		createdAt: string;
-		updatedAt: string;
-		username: string;
-		bio: any;
-		image: string | null;
-		token: string;
-	} | null;
-	errorsMesages: string[] | null;
-	token: string | null;
-}
-
-interface ILogonResponse {
-	user: {
-		id: number;
-		email: string;
-		createdAt: string;
-		updatedAt: string;
-		username: string;
-		bio: any;
-		image: string | null;
-		token: string;
-	};
-}
-
-interface ISignIn {
-	email: string;
-	password: string;
-}
-
-interface ISignUp {
-	username: string;
-	email: string;
-	password: string;
-}
+import { IAuth, ILoginResponse, ISignIn, ISignUp } from './interfaces';
 
 enum ActionType {
 	LOGIN = 'LOGIN',
@@ -57,7 +19,7 @@ export function typedAction(type: string, payload?: any) {
 
 const initialState: IAuth = { user: null, errorsMesages: null, token: null };
 
-const loginAction = (payload: ILogonResponse) => typedAction(ActionType.LOGIN, payload);
+const loginAction = (payload: ILoginResponse) => typedAction(ActionType.LOGIN, payload);
 export const logoutAction = () => {
 	window.localStorage.removeItem('__token');
 	return typedAction(ActionType.LOGOUT);
@@ -68,7 +30,7 @@ export const loginAsyncAction = () => async (dispatch: Dispatch) => {
 	try {
 		const token = window.localStorage.getItem('__token');
 		if (token) {
-			const response: ILogonResponse = await authApi.getViewerData(token);
+			const response: ILoginResponse = await authApi.getViewerData(token);
 
 			dispatch(loginAction(response));
 		}
@@ -78,7 +40,7 @@ export const loginAsyncAction = () => async (dispatch: Dispatch) => {
 };
 
 export const signInAsyncAction = (formData: ISignIn) => async (dispatch: Dispatch) => {
-	const data: ILogonResponse | string[] = await authApi.signIn(formData);
+	const data: ILoginResponse | string[] = await authApi.signIn(formData);
 	if (data instanceof Array) {
 		dispatch(authErrorAction(data));
 	} else {
@@ -87,7 +49,7 @@ export const signInAsyncAction = (formData: ISignIn) => async (dispatch: Dispatc
 };
 
 export const signUpAsyncAction = (formData: ISignUp) => async (dispatch: Dispatch) => {
-	const data: ILogonResponse | string[] = await authApi.signUp(formData);
+	const data: ILoginResponse | string[] = await authApi.signUp(formData);
 
 	if (data instanceof Array) {
 		dispatch(authErrorAction(data));

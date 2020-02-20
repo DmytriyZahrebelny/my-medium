@@ -1,15 +1,8 @@
 import { Dispatch } from 'redux';
 import { articlesApi } from '../../components/Articles/articlesApi';
 import { newPostApi } from '../../components/NewPost/newPostApi';
+import { IAllArticlesData, IState, IArticleData, ICreatePostData } from './interfaces';
 import { RootState } from '../configureStore';
-
-interface IAllArticles {
-	articles: object[] | [];
-}
-
-interface IState {
-	allArticles: IAllArticles;
-}
 
 enum ActionType {
 	ALL_ARTICLES = 'ALL_ARTICLES',
@@ -22,25 +15,6 @@ const initialState: IState = {
 	},
 };
 
-interface IArticleData {
-	article: {
-		title: string;
-		slug: string;
-		author: {
-			image: string;
-			username: string;
-		};
-		createdAt: string;
-		body: string;
-	};
-}
-
-interface ICreatePost {
-	title: string;
-	description: string;
-	body: string;
-}
-
 export function typedAction<T extends string>(type: T): { type: T };
 export function typedAction<T extends string, P extends any>(
 	type: T,
@@ -50,15 +24,16 @@ export function typedAction(type: number, payload?: any) {
 	return { type, payload };
 }
 
-const allArticlesAction = (payload: IAllArticles) => typedAction(ActionType.ALL_ARTICLES, payload);
+const allArticlesAction = (payload: IAllArticlesData) =>
+	typedAction(ActionType.ALL_ARTICLES, payload);
 const createdArticle = (payload: IArticleData) => typedAction(ActionType.CREATED_ARTICLE, payload);
 
 export const allArticlesAsyncAction = (page: number = 0) => async (dispatch: Dispatch) => {
-	const response: IAllArticles = await articlesApi.allArticles(page);
+	const response: IAllArticlesData = await articlesApi.allArticles(page);
 	dispatch(allArticlesAction(response));
 };
 
-export const addNewPostAsyncAction = (data: ICreatePost) => async (
+export const addNewPostAsyncAction = (data: ICreatePostData) => async (
 	dispatch: Dispatch,
 	store: () => RootState
 ) => {

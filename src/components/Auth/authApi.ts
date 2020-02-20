@@ -1,16 +1,7 @@
-interface ISignIn {
-	email: string;
-	password: string;
-}
-
-interface IRegist {
-	username: string;
-	email: string;
-	password: string;
-}
+import { ISignInData, ISignUpData } from './interfaces';
 
 export const authApi = {
-	async signIn({ email, password }: ISignIn): Promise<any> {
+	async signIn({ email, password }: ISignInData): Promise<any> {
 		try {
 			const response = await fetch('/api/users/login', {
 				method: 'POST',
@@ -35,7 +26,7 @@ export const authApi = {
 			return errorsMessages;
 		}
 	},
-	async signUp({ username, email, password }: IRegist): Promise<any> {
+	async signUp({ username, email, password }: ISignUpData): Promise<any> {
 		try {
 			const response = await fetch('/api/users', {
 				method: 'POST',

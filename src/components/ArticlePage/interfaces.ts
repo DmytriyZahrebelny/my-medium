@@ -8,3 +8,9 @@ export interface IArticleData {
 	createdAt: string;
 	body: string;
 }
+
+export interface IMatchParams {
+	params: {
+		id: string;
+	};
+}

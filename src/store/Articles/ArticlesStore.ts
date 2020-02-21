@@ -13,6 +13,7 @@ const initialState: IState = {
 	allArticles: {
 		articles: [],
 	},
+	articleId: null,
 };
 
 export function typedAction<T extends string>(type: T): { type: T };
@@ -61,6 +62,7 @@ export default (state = initialState, action: articlesAction) => {
 					...state.allArticles,
 					articles: [action.payload.article, ...state.allArticles.articles],
 				},
+				articleId: action.payload.article.slug,
 			};
 		default:
 			return state;

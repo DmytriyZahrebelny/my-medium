@@ -4,6 +4,7 @@ export interface IAllArticlesData {
 
 export interface IState {
 	allArticles: IAllArticlesData;
+	articleId: null | string;
 }
 
 export interface IArticleData {

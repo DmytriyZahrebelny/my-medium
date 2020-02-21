@@ -1,45 +1,11 @@
 import React from 'react';
-import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import TextField from '../components/FormControls/TextField';
 import TextareaField from '../components/FormControls/TextareaField';
-import * as actions from '../../store/Articles/ArticlesStore';
+import { useNewPostHooks } from './useNewPostHooks';
 import './newPost.sass';
 
-const validate = (value: any) => {
-	const errors: any = {};
-
-	if (!value.title) {
-		errors.title = 'required';
-	}
-
-	if (!value.description) {
-		errors.description = 'required';
-	}
-
-	if (!value.body) {
-		errors.body = 'required';
-	}
-
-	return errors;
-};
-
 const NewPost: React.FC = () => {
-	const dispatch = useDispatch();
-	const history = useHistory();
-	const { handleSubmit, getFieldProps, touched, errors } = useFormik({
-		initialValues: {
-			title: '',
-			description: '',
-			body: '',
-		},
-		validate,
-		onSubmit: async (values: any) => {
-			dispatch(actions.addNewPostAsyncAction(values));
-			history.push('/posts');
-		},
-	});
+	const { handleSubmit, getFieldProps, touched, errors } = useNewPostHooks();
 
 	return (
 		<div className='new-post'>

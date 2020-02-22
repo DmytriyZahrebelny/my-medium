@@ -1,5 +1,5 @@
 import React from 'react';
-import { IErrorsProp } from '../interfaces';
+import { IErrorsProp } from '../../Auth/interfaces';
 import './errorsMessages.sass';
 
 const ErrorsMessages: React.FC<IErrorsProp> = ({ errors }) => (

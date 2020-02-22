@@ -7,6 +7,7 @@ interface ITextFieldProps {
 	touched: any;
 	className?: string;
 	placeholder?: string;
+	required?: boolean;
 }
 
 const TextareaField: React.FC<ITextFieldProps> = ({
@@ -15,11 +16,14 @@ const TextareaField: React.FC<ITextFieldProps> = ({
 	touched,
 	placeholder,
 	className = 'textarea-field',
+	required = true,
 }) => {
 	return (
 		<div className={className}>
 			<textarea {...input} placeholder={placeholder} />
-			{errors[input.name] && touched[input.name] ? <div>{errors[input.name]}</div> : null}
+			{required && errors[input.name] && touched[input.name] ? (
+				<div>{errors[input.name]}</div>
+			) : null}
 		</div>
 	);
 };

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './components/Header/Header';
 import SignIn from './components/Auth/SignIn/SignIn';
@@ -11,15 +11,23 @@ import SettingsPage from './components/SettingsPage/SettingsPage';
 import * as authAction from './store/Auth/AuthStore';
 import * as articlesAction from './store/Articles/ArticlesStore';
 import { RootState } from './store/configureStore';
+import { IAuth } from './store/Auth/interfaces';
 
 const App: React.FC = () => {
+	const history = useHistory();
 	const dispatch = useDispatch();
-	const token: string | null = useSelector((state: RootState) => state.authStore.token);
+	const { token, redirectTo }: IAuth = useSelector((state: RootState) => state.authStore);
 
 	useEffect(() => {
 		dispatch(authAction.loginAsyncAction());
 		dispatch(articlesAction.allArticlesAsyncAction());
 	}, [dispatch]);
+
+	useEffect(() => {
+		if (redirectTo) {
+			history.push(redirectTo);
+		}
+	}, [redirectTo, history]);
 
 	return (
 		<>

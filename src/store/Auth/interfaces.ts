@@ -11,6 +11,7 @@ export interface IAuth {
 	} | null;
 	errorsMesages: string[] | null;
 	token: string | null;
+	redirectTo: null | string;
 }
 
 export interface ILoginResponse {

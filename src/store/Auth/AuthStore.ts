@@ -19,7 +19,11 @@ export function typedAction(type: string, payload?: any) {
 	return { type, payload };
 }
 
-const initialState: IAuth = { user: null, errorsMesages: null, token: null };
+const initialState: IAuth = {
+	user: null,
+	errorsMesages: null,
+	token: null,
+};
 
 export const logoutAction = () => {
 	window.localStorage.removeItem('__token');
@@ -80,9 +84,9 @@ type AuthAction = ReturnType<typeof loginAction | typeof logoutAction | typeof a
 export default (state = initialState, action: AuthAction): IAuth => {
 	switch (action.type) {
 		case ActionType.LOGIN:
-			return { ...state, ...action.payload, token: action.payload.user.token, errorsMesages: null };
+			return { ...action.payload, token: action.payload.user.token, errorsMesages: null };
 		case ActionType.LOGOUT:
-			return { ...state, user: null, token: null };
+			return { user: null, token: null, errorsMesages: null };
 		case ActionType.ERRORS:
 			return { ...state, errorsMesages: action.payload };
 		default:

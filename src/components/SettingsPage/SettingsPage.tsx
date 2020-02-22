@@ -1,68 +1,17 @@
 import React from 'react';
-import { useFormik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
 import TextField from '../components/FormControls/TextField';
 import TextareaField from '../components/FormControls/TextareaField';
-import { RootState } from '../../store/configureStore';
-import * as actions from '../../store/Auth/AuthStore';
+import ErrorsMessages from '../components/ErrorsMessages/ErrorsMessages';
+import { useSettingsHooks } from './useSettingsHooks';
 import './settingsPage.sass';
 
-interface IUserData {
-	image: string;
-	username: string;
-	bio: string | null;
-	email: string;
-	password: string;
-}
-
-const validate = (value: any) => {
-	const errors: any = {};
-
-	if (!value.username) {
-		errors.username = 'required';
-	}
-
-	if (!value.email) {
-		errors.email = 'required';
-	}
-
-	return errors;
-};
-
 const SettingsPage: React.FC = () => {
-	const dispatch = useDispatch();
-	const userData = useSelector((state: RootState) => state.authStore.user);
-
-	const getNewUserData = ({ image, username, bio, email, password }: IUserData) => {
-		return password === ''
-			? { image, username, bio, email }
-			: { image, username, bio, email, password };
-	};
-
-	const { handleSubmit, getFieldProps, touched, errors } = useFormik({
-		initialValues: {
-			image: '',
-			username: userData?.username,
-			bio: '',
-			email: userData?.email,
-			password: '',
-		},
-		validate,
-		onSubmit: ({ image, username = '', bio, email = '', password }) => {
-			const newUserData: IUserData = {
-				image,
-				username,
-				bio: bio || null,
-				email,
-				password,
-			};
-			dispatch(actions.updateUserDataAsyncAction(getNewUserData(newUserData)));
-		},
-	});
+	const { errorsMesages, handleSubmit, getFieldProps, touched, errors } = useSettingsHooks();
 
 	return (
 		<div className='settings'>
 			<h1 className='settings__title'>Your Settings</h1>
+			{errorsMesages ? <ErrorsMessages errors={errorsMesages} /> : null}
 			<form onSubmit={handleSubmit}>
 				<TextField
 					type='text'

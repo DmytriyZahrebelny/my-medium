@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from '../../components/FormControls/TextField';
-import ErrorsMessages from '../components/ErrorsMessages';
+import ErrorsMessages from '../../components/ErrorsMessages/ErrorsMessages';
 import { useAuthHooks } from '../useAuthHooks';
 import '../auth.sass';
 

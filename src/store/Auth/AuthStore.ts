@@ -1,6 +1,8 @@
 import { Dispatch } from 'redux';
 import { authApi } from '../../components/Auth/authApi';
+import { settingsApi } from '../../components/SettingsPage/settingsApi';
 import { IAuth, ILoginResponse, ISignIn, ISignUp } from './interfaces';
+import { RootState } from '../configureStore';
 
 enum ActionType {
 	LOGIN = 'LOGIN',
@@ -19,12 +21,13 @@ export function typedAction(type: string, payload?: any) {
 
 const initialState: IAuth = { user: null, errorsMesages: null, token: null };
 
-const loginAction = (payload: ILoginResponse) => typedAction(ActionType.LOGIN, payload);
 export const logoutAction = () => {
 	window.localStorage.removeItem('__token');
 	return typedAction(ActionType.LOGOUT);
 };
-export const authErrorAction = (payload: any) => typedAction(ActionType.ERRORS, payload);
+const loginAction = (payload: ILoginResponse) => typedAction(ActionType.LOGIN, payload);
+const authErrorAction = (payload: any) => typedAction(ActionType.ERRORS, payload);
+const updateUserData = (payload: any) => typedAction(ActionType.LOGIN, payload);
 
 export const loginAsyncAction = () => async (dispatch: Dispatch) => {
 	try {
@@ -58,12 +61,26 @@ export const signUpAsyncAction = (formData: ISignUp) => async (dispatch: Dispatc
 	}
 };
 
+export const updateUserDataAsyncAction = (formData: any) => async (
+	dispatch: Dispatch,
+	store: () => RootState
+) => {
+	const { token } = store().authStore;
+	const data: ILoginResponse | string[] = await settingsApi.updateUserData(formData, token);
+
+	if (data instanceof Array) {
+		dispatch(authErrorAction(data));
+	} else {
+		dispatch(updateUserData(data));
+	}
+};
+
 type AuthAction = ReturnType<typeof loginAction | typeof logoutAction | typeof authErrorAction>;
 
 export default (state = initialState, action: AuthAction): IAuth => {
 	switch (action.type) {
 		case ActionType.LOGIN:
-			return { ...state, ...action.payload, token: action.payload.user.token };
+			return { ...state, ...action.payload, token: action.payload.user.token, errorsMesages: null };
 		case ActionType.LOGOUT:
 			return { ...state, user: null, token: null };
 		case ActionType.ERRORS:

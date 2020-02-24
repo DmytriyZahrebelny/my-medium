@@ -19,8 +19,9 @@ const App: React.FC = () => {
 	const { token, redirectTo }: IAuth = useSelector((state: RootState) => state.authStore);
 
 	useEffect(() => {
-		dispatch(authAction.loginAsyncAction());
-		dispatch(articlesAction.allArticlesAsyncAction());
+		Promise.resolve(dispatch(authAction.loginAsyncAction())).then(() => {
+			dispatch(articlesAction.allArticlesAsyncAction());
+		});
 	}, [dispatch]);
 
 	useEffect(() => {

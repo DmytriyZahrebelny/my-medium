@@ -2,20 +2,20 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 import { RootState } from '../../store/configureStore';
-import { IArticleData, IMatchParams } from './interfaces';
+import { IAllArticlesData, IArticleData, IMatchParams } from './interfaces';
 import './articlePage.sass';
 
 const ArticlePage: React.FC = () => {
-	const allArticles: any[] = useSelector(
-		(state: RootState) => state.articlesStore.allArticles.articles
+	const { articles }: IAllArticlesData = useSelector(
+		(state: RootState) => state.articlesStore.allArticles
 	);
 
 	const { params }: IMatchParams = useRouteMatch();
-	if (!allArticles.length) {
+	if (!articles.length) {
 		return null;
 	}
 
-	const articlleData = allArticles.find((el: IArticleData) => el.slug === params.id);
+	const articlleData = articles.find((el: IArticleData) => el.slug === params.id);
 	const { title, body, createdAt, author }: IArticleData = articlleData;
 
 	return (

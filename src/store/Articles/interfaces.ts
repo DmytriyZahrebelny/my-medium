@@ -1,5 +1,5 @@
 export interface IAllArticlesData {
-	articles: object[] | [];
+	articles: IArticleData[];
 }
 
 export interface IState {
@@ -7,7 +7,7 @@ export interface IState {
 	articleId: null | string;
 }
 
-export interface IArticleData {
+export interface INewArticleData {
 	article: {
 		title: string;
 		slug: string;
@@ -18,6 +18,17 @@ export interface IArticleData {
 		createdAt: string;
 		body: string;
 	};
+}
+
+export interface IArticleData {
+	title: string;
+	slug: string;
+	author: {
+		image: string;
+		username: string;
+	};
+	createdAt: string;
+	body: string;
 }
 
 export interface ICreatePostData {

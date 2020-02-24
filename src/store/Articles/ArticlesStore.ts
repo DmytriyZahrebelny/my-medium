@@ -1,12 +1,19 @@
 import { Dispatch } from 'redux';
 import { articlesApi } from '../../components/Articles/articlesApi';
 import { newPostApi } from '../../components/NewPost/newPostApi';
-import { IAllArticlesData, IState, IArticleData, ICreatePostData } from './interfaces';
+import {
+	IAllArticlesData,
+	IState,
+	INewArticleData,
+	ICreatePostData,
+	IArticleData,
+} from './interfaces';
 import { RootState } from '../configureStore';
 
 enum ActionType {
 	ALL_ARTICLES = 'ALL_ARTICLES',
 	CREATED_ARTICLE = 'CREATED_ARTICLE',
+	CHECK_PREFERENCE = 'CHECK_PREFERENCE',
 }
 
 const initialState: IState = {
@@ -27,10 +34,19 @@ export function typedAction(type: number, payload?: any) {
 
 const allArticlesAction = (payload: IAllArticlesData) =>
 	typedAction(ActionType.ALL_ARTICLES, payload);
-const createdArticle = (payload: IArticleData) => typedAction(ActionType.CREATED_ARTICLE, payload);
 
-export const allArticlesAsyncAction = (page: number = 0) => async (dispatch: Dispatch) => {
-	const response: IAllArticlesData = await articlesApi.allArticles(page);
+const createdArticle = (payload: INewArticleData) =>
+	typedAction(ActionType.CREATED_ARTICLE, payload);
+
+const checkPreferenceArticleAction = (payload: IArticleData[]) =>
+	typedAction(ActionType.CHECK_PREFERENCE, payload);
+
+export const allArticlesAsyncAction = (page: number = 0) => async (
+	dispatch: Dispatch,
+	store: () => RootState
+) => {
+	const { token } = store().authStore;
+	const response: IAllArticlesData = await articlesApi.allArticles(page, token);
 	dispatch(allArticlesAction(response));
 };
 
@@ -39,11 +55,32 @@ export const addNewPostAsyncAction = (data: ICreatePostData) => async (
 	store: () => RootState
 ) => {
 	const { token } = store().authStore;
-	const response: IArticleData = await newPostApi.createPost(data, token);
+	const response: INewArticleData = await newPostApi.createPost(data, token);
 	dispatch(createdArticle(response));
 };
 
-type articlesAction = ReturnType<typeof allArticlesAction | typeof createdArticle>;
+export const checkPreferenceArticleAsyncAction = (favorited: boolean, slug: string) => async (
+	dispatch: Dispatch,
+	store: () => RootState
+) => {
+	const { token } = store().authStore;
+	const { articles }: IAllArticlesData = store().articlesStore.allArticles;
+	const articleIndex: number = articles.findIndex((article: IArticleData) => article.slug === slug);
+
+	if (favorited) {
+		const { article } = await articlesApi.unfavoriteArticle(slug, token);
+		articles.splice(articleIndex, 1, article);
+		dispatch(checkPreferenceArticleAction(articles));
+	} else {
+		const { article } = await articlesApi.favoriteArticle(slug, token);
+		articles.splice(articleIndex, 1, article);
+		dispatch(checkPreferenceArticleAction(articles));
+	}
+};
+
+type articlesAction = ReturnType<
+	typeof allArticlesAction | typeof createdArticle | typeof checkPreferenceArticleAction
+>;
 
 export default (state = initialState, action: articlesAction) => {
 	switch (action.type) {
@@ -63,6 +100,13 @@ export default (state = initialState, action: articlesAction) => {
 					articles: [action.payload.article, ...state.allArticles.articles],
 				},
 				articleId: action.payload.article.slug,
+			};
+		case ActionType.CHECK_PREFERENCE:
+			return {
+				...state,
+				allArticles: {
+					articles: [...action.payload],
+				},
 			};
 		default:
 			return state;

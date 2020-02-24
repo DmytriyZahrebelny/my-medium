@@ -19,4 +19,5 @@ export interface IArticlesProps {
 export interface IPreferenceArticleProps {
 	favorited: boolean;
 	favoritesCount: number;
+	slug: string;
 }

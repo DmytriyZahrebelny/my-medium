@@ -15,7 +15,7 @@ const ArticlesList: React.FC<IArticlesProps> = ({ articles, lastArticlesLinkRef 
 							<p className='article-link__author-name'>{author.username}</p>
 							<p className='article-link__author-data'>{new Date(createdAt).toDateString()}</p>
 						</div>
-						<PreferenceArticle favorited={favorited} favoritesCount={favoritesCount} />
+						<PreferenceArticle favorited={favorited} favoritesCount={favoritesCount} slug={slug} />
 					</div>
 					<Link to={`/posts/${slug}`}>
 						<h2 className='article-link__name'>{title}</h2>

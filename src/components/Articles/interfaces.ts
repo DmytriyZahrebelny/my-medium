@@ -7,9 +7,17 @@ export interface IArticlesData {
 	};
 	createdAt: string;
 	body: string;
+	favorited: boolean;
+	favoritesCount: number;
 }
 
 export interface IArticlesProps {
 	articles: any[];
 	lastArticlesLinkRef: any;
+}
+
+export interface IPreferenceArticleProps {
+	favorited: boolean;
+	favoritesCount: number;
+	slug: string;
 }

@@ -1,3 +1,7 @@
+export interface IAllArticlesData {
+	articles: any[];
+}
+
 export interface IArticleData {
 	title: string;
 	slug: string;

@@ -32,11 +32,10 @@ export const useSettingsHooks = () => {
 		},
 		validate,
 		onSubmit: (values: IUserData) => {
-			const getNewUserData = ({ image, username = '', bio, email = '', password }: IUserData) => {
-				return password === ''
-					? { image, username, bio, email }
-					: { image, username, bio, email, password };
+			const getNewUserData = ({ password, ...rest }: IUserData) => {
+				return password === '' ? { ...rest } : { ...rest, password };
 			};
+
 			dispatch(actions.updateUserDataAsyncAction(getNewUserData(values)));
 		},
 	});

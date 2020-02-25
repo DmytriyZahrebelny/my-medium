@@ -1,4 +1,4 @@
-export const articleCommentsApi: any = {
+export const commentsApi: any = {
 	async getComments(slug: string, token: string): Promise<any> {
 		const response = await fetch(`/api/articles/${slug}/comments`, {
 			method: 'GET',

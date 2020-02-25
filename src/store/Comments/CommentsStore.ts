@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { articleCommentsApi } from '../../components/ArticlePage/articleCommentsApi';
+import { commentsApi } from '../../api/commentsApi';
 import { RootState } from '../configureStore';
 import { ICommentData, ICommentRequestData } from './interfaces';
 
@@ -38,7 +38,7 @@ export const getCommentsAsyncAction = (slug: string) => async (
 	store: () => RootState
 ) => {
 	const { token } = store().authStore;
-	const response: ICommentsState = await articleCommentsApi.getComments(slug, token);
+	const response: ICommentsState = await commentsApi.getComments(slug, token);
 	dispatch(getCommentsAction(response));
 };
 
@@ -48,7 +48,7 @@ export const deleteCommentsAsyncAction = (slug: string, commentId: string) => as
 ) => {
 	const { token } = store().authStore;
 	const { comments } = store().commentsStore;
-	await articleCommentsApi.deleteComments(slug, commentId, token);
+	await commentsApi.deleteComments(slug, commentId, token);
 	const newComments: ICommentData[] = comments.filter(({ id }: any) => id !== Number(commentId));
 	dispatch(deleteCommentsAction({ comments: newComments }));
 };
@@ -59,11 +59,7 @@ export const createCommentsAsyncAction = (slug: string, comment: string) => asyn
 ) => {
 	const { token } = store().authStore;
 	const { comments } = store().commentsStore;
-	const response: ICommentRequestData = await articleCommentsApi.createComments(
-		slug,
-		comment,
-		token
-	);
+	const response: ICommentRequestData = await commentsApi.createComments(slug, comment, token);
 	const newComments: ICommentData[] = [response.comment, ...comments];
 	dispatch(createCommentsAction({ comments: newComments }));
 };

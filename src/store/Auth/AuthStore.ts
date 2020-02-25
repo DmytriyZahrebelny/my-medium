@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
-import { authApi } from '../../components/Auth/authApi';
-import { settingsApi } from '../../components/SettingsPage/settingsApi';
+import { authApi } from '../../api/authApi';
+import { settingsApi } from '../../api/settingsApi';
 import { IAuth, ILoginResponse, ISignIn, ISignUp } from './interfaces';
 import { RootState } from '../configureStore';
 

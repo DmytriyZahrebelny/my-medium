@@ -1,24 +1,10 @@
 import React from 'react';
-import { useFormik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../store/configureStore';
-import * as actions from '../../../store/Comments/CommentsStore';
 import { ICommentsProps } from '../interfaces';
+import { useArticlePageHooks } from '../useArticlePageHooks';
 import './commentsForm.sass';
 
 const CommentsForm: React.FC<ICommentsProps> = ({ slug }) => {
-	const dispatch = useDispatch();
-	const user = useSelector((state: RootState) => state.authStore.user);
-	const { handleSubmit, getFieldProps } = useFormik({
-		initialValues: {
-			comment: '',
-		},
-		onSubmit: ({ comment }) => {
-			if (comment.length) {
-				dispatch(actions.createCommentsAsyncAction(slug, comment));
-			}
-		},
-	});
+	const { user, handleSubmit, getFieldProps } = useArticlePageHooks(slug);
 
 	return (
 		<div className='comment-form'>

@@ -2,6 +2,21 @@ export interface IAllArticlesData {
 	articles: any[];
 }
 
+export type tokenType = { token: string | null };
+
+export interface IUserData {
+	user: {
+		id: number;
+		email: string;
+		createdAt: string;
+		updatedAt: string;
+		username: string;
+		bio: any;
+		image: string | null;
+		token: string;
+	} | null;
+}
+
 export interface IArticleData {
 	title: string;
 	slug: string;

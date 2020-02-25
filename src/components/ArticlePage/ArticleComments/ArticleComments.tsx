@@ -1,28 +1,16 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import Icon from '../../components/Icon';
 import * as actions from '../../../store/Comments/CommentsStore';
-import { RootState } from '../../../store/configureStore';
-import { ICommentData, IArticleCommentsData, ICommentsProps } from '../interfaces';
+import { ICommentData, ICommentsProps } from '../interfaces';
+import { useArticlePageHooks } from '../useArticlePageHooks';
 import './articleComments.sass';
 
 const ArticleComments: React.FC<ICommentsProps> = ({ slug }) => {
-	const dispatch = useDispatch();
-	const user = useSelector((state: RootState) => state.authStore.user);
-	const { comments }: IArticleCommentsData = useSelector((state: RootState) => state.commentsStore);
+	const { user, comments, onDeleteCommentClick, dispatch } = useArticlePageHooks(slug);
 
 	useEffect(() => {
 		dispatch(actions.getCommentsAsyncAction(slug));
 	}, [slug, dispatch]);
-
-	const onDeleteCommentClick = async (evt: React.MouseEvent<HTMLButtonElement>) => {
-		const currentElement = (evt.target as HTMLButtonElement).closest('.comments__delete');
-
-		if (currentElement) {
-			const commentId = currentElement.id;
-			dispatch(actions.deleteCommentsAsyncAction(slug, commentId));
-		}
-	};
 
 	if (comments.length === 0) {
 		return null;

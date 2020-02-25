@@ -1,4 +1,4 @@
-import { ISignInData, ISignUpData } from './interfaces';
+import { ISignInData, ISignUpData } from '../components/Auth/interfaces';
 
 export const authApi = {
 	async signIn({ email, password }: ISignInData): Promise<any> {

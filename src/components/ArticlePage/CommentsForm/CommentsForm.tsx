@@ -2,14 +2,11 @@ import React from 'react';
 import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/configureStore';
-import * as actions from '../../../store/CommentsStore/CommentsStore';
+import * as actions from '../../../store/Comments/CommentsStore';
+import { ICommentsProps } from '../interfaces';
 import './commentsForm.sass';
 
-interface IArticleCommentsProps {
-	slug: string;
-}
-
-const CommentsForm: React.FC<IArticleCommentsProps> = ({ slug }) => {
+const CommentsForm: React.FC<ICommentsProps> = ({ slug }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: RootState) => state.authStore.user);
 	const { handleSubmit, getFieldProps } = useFormik({

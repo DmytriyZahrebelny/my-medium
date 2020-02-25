@@ -18,3 +18,21 @@ export interface IMatchParams {
 		id: string;
 	};
 }
+
+export interface ICommentData {
+	id: string;
+	createdAt: string;
+	body: string;
+	author: {
+		username: string;
+		image: string;
+	};
+}
+
+export interface IArticleCommentsData {
+	comments: ICommentData[];
+}
+
+export interface ICommentsProps {
+	slug: string;
+}

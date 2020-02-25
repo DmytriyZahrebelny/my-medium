@@ -1,9 +1,10 @@
 import { Dispatch } from 'redux';
 import { articleCommentsApi } from '../../components/ArticlePage/articleCommentsApi';
 import { RootState } from '../configureStore';
+import { ICommentData, ICommentRequestData } from './interfaces';
 
 interface ICommentsState {
-	comments: any[];
+	comments: ICommentData[];
 }
 
 enum ActionType {
@@ -48,18 +49,22 @@ export const deleteCommentsAsyncAction = (slug: string, commentId: string) => as
 	const { token } = store().authStore;
 	const { comments } = store().commentsStore;
 	await articleCommentsApi.deleteComments(slug, commentId, token);
-	const newComments = comments.filter(({ id }: any) => id !== Number(commentId));
+	const newComments: ICommentData[] = comments.filter(({ id }: any) => id !== Number(commentId));
 	dispatch(deleteCommentsAction({ comments: newComments }));
 };
 
-export const createCommentsAsyncAction = (slug: string, comment: any) => async (
+export const createCommentsAsyncAction = (slug: string, comment: string) => async (
 	dispatch: Dispatch,
 	store: () => RootState
 ) => {
 	const { token } = store().authStore;
 	const { comments } = store().commentsStore;
-	const response = await articleCommentsApi.createComments(slug, comment, token);
-	const newComments = [response.comment, ...comments];
+	const response: ICommentRequestData = await articleCommentsApi.createComments(
+		slug,
+		comment,
+		token
+	);
+	const newComments: ICommentData[] = [response.comment, ...comments];
 	dispatch(createCommentsAction({ comments: newComments }));
 };
 

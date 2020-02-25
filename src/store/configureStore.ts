@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import authStore from './Auth/AuthStore';
 import articlesStore from './Articles/ArticlesStore';
-import commentsStore from './CommentsStore/CommentsStore';
+import commentsStore from './Comments/CommentsStore';
 
 export const rootReducer = combineReducers({
 	authStore,

@@ -1,18 +1,15 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '../../components/Icon';
-import * as actions from '../../../store/CommentsStore/CommentsStore';
+import * as actions from '../../../store/Comments/CommentsStore';
 import { RootState } from '../../../store/configureStore';
+import { ICommentData, IArticleCommentsData, ICommentsProps } from '../interfaces';
 import './articleComments.sass';
 
-interface IArticleCommentsProps {
-	slug: string;
-}
-
-const ArticleComments: React.FC<IArticleCommentsProps> = ({ slug }) => {
+const ArticleComments: React.FC<ICommentsProps> = ({ slug }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: RootState) => state.authStore.user);
-	const { comments } = useSelector((state: RootState) => state.commentsStore);
+	const { comments }: IArticleCommentsData = useSelector((state: RootState) => state.commentsStore);
 
 	useEffect(() => {
 		dispatch(actions.getCommentsAsyncAction(slug));
@@ -33,12 +30,12 @@ const ArticleComments: React.FC<IArticleCommentsProps> = ({ slug }) => {
 
 	return (
 		<>
-			{comments.map(({ id, body, author, createdAt }: any) => (
+			{comments.map(({ id, body, author, createdAt }: ICommentData) => (
 				<div className='comments' key={id}>
 					<p className='comments__text'>{body}</p>
 					<div className='comments__author'>
 						<img
-							src={author.img || 'https://static.productionready.io/images/smiley-cyrus.jpg'}
+							src={author.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'}
 							className='comments__author-img'
 							alt='img'
 						/>

@@ -1,5 +1,5 @@
 export const articleCommentsApi: any = {
-	async allArticles(slug: string, token: string): Promise<any> {
+	async getComments(slug: string, token: string): Promise<any> {
 		const response = await fetch(`/api/articles/${slug}/comments`, {
 			method: 'GET',
 			headers: {
@@ -9,5 +9,13 @@ export const articleCommentsApi: any = {
 
 		const data = await response.json();
 		return data;
+	},
+	async deleteComments(slug: string, commentId: number, token: string): Promise<any> {
+		await fetch(`/api/articles/${slug}/comments/${commentId}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: token ? `Token ${token}` : '',
+			},
+		});
 	},
 };

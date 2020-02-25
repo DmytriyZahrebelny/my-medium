@@ -1,12 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
+import CommentsForm from './CommentsForm/CommentsForm';
 import ArticleComments from './ArticleComments/ArticleComments';
 import { RootState } from '../../store/configureStore';
 import { IAllArticlesData, IArticleData, IMatchParams } from './interfaces';
 import './articlePage.sass';
 
 const ArticlePage: React.FC = () => {
+	const { token } = useSelector((state: RootState) => state.authStore);
 	const { articles }: IAllArticlesData = useSelector(
 		(state: RootState) => state.articlesStore.allArticles
 	);
@@ -34,6 +36,7 @@ const ArticlePage: React.FC = () => {
 				</div>
 			</div>
 			<p className='article__text'>{body}</p>
+			{token ? <CommentsForm slug={params.id} /> : null}
 			<ArticleComments slug={params.id} />
 		</>
 	);

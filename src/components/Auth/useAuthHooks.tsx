@@ -47,7 +47,7 @@ export const useAuthHooks = () => {
 			password: '',
 		},
 		validate: signUpValidate,
-		onSubmit: async values => {
+		onSubmit: values => {
 			dispatch(actions.signUpAsyncAction(values));
 		},
 	});

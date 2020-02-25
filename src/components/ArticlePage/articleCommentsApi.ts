@@ -18,4 +18,17 @@ export const articleCommentsApi: any = {
 			},
 		});
 	},
+	async createComments(slug: string, comment: string, token: string): Promise<any> {
+		const response = await fetch(`/api/articles/${slug}/comments`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: token ? `Token ${token}` : '',
+			},
+			body: JSON.stringify({ comment: { body: comment } }),
+		});
+
+		const data = await response.json();
+		return data;
+	},
 };

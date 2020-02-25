@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { articleCommentsApi } from '../../components/ArticlePage/ArticleComments/articleCommentsApi';
+import { articleCommentsApi } from '../../components/ArticlePage/articleCommentsApi';
 import { RootState } from '../configureStore';
 
 interface ICommentsState {
@@ -9,6 +9,7 @@ interface ICommentsState {
 enum ActionType {
 	COMMENTS = 'COMMENTS',
 	DELETE_COMMENTS = 'DELETE_COMMENTS',
+	CREATE_COMMENTS = 'CREATE_COMMENTS',
 }
 
 const initialState: ICommentsState = {
@@ -28,6 +29,8 @@ const getCommentsAction = (payload: ICommentsState) => typedAction(ActionType.CO
 
 const deleteCommentsAction = (payload: ICommentsState) =>
 	typedAction(ActionType.DELETE_COMMENTS, payload);
+
+const createCommentsAction = (payload: any) => typedAction(ActionType.CREATE_COMMENTS, payload);
 
 export const getCommentsAsyncAction = (slug: string) => async (
 	dispatch: Dispatch,
@@ -49,13 +52,28 @@ export const deleteCommentsAsyncAction = (slug: string, commentId: string) => as
 	dispatch(deleteCommentsAction({ comments: newComments }));
 };
 
-type commentsAction = ReturnType<typeof getCommentsAction | typeof deleteCommentsAction>;
+export const createCommentsAsyncAction = (slug: string, comment: any) => async (
+	dispatch: Dispatch,
+	store: () => RootState
+) => {
+	const { token } = store().authStore;
+	const { comments } = store().commentsStore;
+	const response = await articleCommentsApi.createComments(slug, comment, token);
+	const newComments = [response.comment, ...comments];
+	dispatch(createCommentsAction({ comments: newComments }));
+};
+
+type commentsAction = ReturnType<
+	typeof getCommentsAction | typeof deleteCommentsAction | typeof createCommentsAction
+>;
 
 export default (state = initialState, action: commentsAction) => {
 	switch (action.type) {
 		case ActionType.COMMENTS:
 			return action.payload;
 		case ActionType.DELETE_COMMENTS:
+			return action.payload;
+		case ActionType.CREATE_COMMENTS:
 			return action.payload;
 		default:
 			return state;

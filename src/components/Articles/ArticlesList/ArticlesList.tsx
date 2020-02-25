@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PreferenceArticle from '../ArticleLike/PreferenceArticle';
+import PreferenceArticle from '../PreferenceArticle/PreferenceArticle';
 import { IArticlesData, IArticlesProps } from '../interfaces';
 import './articlesList.sass';
 

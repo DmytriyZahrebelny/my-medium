@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { articlesApi } from '../../components/Articles/articlesApi';
+import { articlesApi } from '../../api/articlesApi';
 import { newPostApi } from '../../api/newPostApi';
 import {
 	IAllArticlesData,

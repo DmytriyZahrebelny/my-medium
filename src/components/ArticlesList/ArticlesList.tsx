@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ArticlesList from './ArticlesList/ArticlesList';
+import ArticlesLink from './ArticlesLink/ArticlesLink';
+import Tags from './Tags/Tags';
 import { RootState } from '../../store/configureStore';
 import * as articlesAction from '../../store/Articles/ArticlesStore';
-import './articles.sass';
+import './articlesList.sass';
 
 const Articles = () => {
 	const [numberPage, setNumberPage] = useState<number>(1);
@@ -42,7 +43,8 @@ const Articles = () => {
 
 	return (
 		<div className='articles'>
-			<ArticlesList articles={articles} lastArticlesLinkRef={lastArticlesLinkRef} />
+			<ArticlesLink articles={articles} lastArticlesLinkRef={lastArticlesLinkRef} />
+			<Tags />
 		</div>
 	);
 };

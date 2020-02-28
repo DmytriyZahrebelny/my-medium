@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PreferenceArticle from '../PreferenceArticle/PreferenceArticle';
 import { IArticlesData, IArticlesProps } from '../interfaces';
-import './articlesList.sass';
+import './articlesLink.sass';
 
 const ArticlesList: React.FC<IArticlesProps> = ({ articles, lastArticlesLinkRef }) => (
-	<>
+	<div className='articles__container'>
 		{articles.map(
 			({ title, slug, author, createdAt, body, favoritesCount, favorited }: IArticlesData) => (
 				<div ref={lastArticlesLinkRef} className='article-link' key={slug}>
@@ -24,7 +24,7 @@ const ArticlesList: React.FC<IArticlesProps> = ({ articles, lastArticlesLinkRef 
 				</div>
 			)
 		)}
-	</>
+	</div>
 );
 
 export default ArticlesList;

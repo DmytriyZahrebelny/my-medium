@@ -3,7 +3,7 @@ export interface IAllArticlesData {
 }
 
 export interface IState {
-	allArticles: IAllArticlesData;
+	articles: IArticleData[];
 	articleId: null | string;
 }
 

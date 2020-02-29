@@ -21,7 +21,7 @@ const Tags = () => {
 		<div className='tags'>
 			<h1 className='tags__title'>Popular Tags</h1>
 			{tags.map((tag: string) => (
-				<Link to='/' className='tags__link' key={tag} id={tag}>
+				<Link to={`/bytag/${tag}`} className='tags__link' key={tag}>
 					{tag}
 				</Link>
 			))}

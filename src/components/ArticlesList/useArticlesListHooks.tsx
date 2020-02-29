@@ -2,11 +2,12 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import { RootState } from '../../store/configureStore';
+import { IArticlesList, IObserverData } from './interfaces';
 import * as authAction from '../../store/Auth/AuthStore';
 import * as articlesAction from '../../store/Articles/ArticlesStore';
 
 export const useArticlesListHooks = () => {
-	const { articles } = useSelector((state: RootState) => state.articlesStore);
+	const { articles }: IArticlesList = useSelector((state: RootState) => state.articlesStore);
 	const [numberPage, setNumberPage] = useState<number>(1);
 	const [loading, setLoading] = useState<boolean>(false);
 	const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export const useArticlesListHooks = () => {
 		}
 	}, [numberPage, dispatch, loading, tag, pathname]);
 
-	const observer: any = useRef();
+	const observer: IObserverData = useRef<HTMLDivElement>();
 	const lastArticlesLinkRef = useCallback((node: HTMLElement) => {
 		if (observer.current) {
 			observer.current.disconnect();

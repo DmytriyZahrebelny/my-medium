@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { RootState } from '../../store/configureStore';
+import { IArticleId } from './interfaces';
 import * as actions from '../../store/Articles/ArticlesStore';
 
 const validate = (value: any) => {
@@ -26,7 +27,7 @@ const validate = (value: any) => {
 export const useNewPostHooks = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const articleId: string | null = useSelector((state: RootState) => state.articlesStore.articleId);
+	const { articleId }: IArticleId = useSelector((state: RootState) => state.articlesStore);
 
 	const { handleSubmit, getFieldProps, touched, errors } = useFormik({
 		initialValues: {

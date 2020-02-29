@@ -20,8 +20,10 @@ export const useHeaderHooks = () => {
 		return () => window.removeEventListener('click', removeUserMenu);
 	}, [showUserMenu]);
 
-	const onUserClick = (): void => dispatch({ type: HADER_CONSTANTS.SHOW_USER_MENU, showUserMenu: !showUserMenu });
-	const onSearchClick = (): void => dispatch({ type: HADER_CONSTANTS.IS_SEARCH, isSearch: !isSearch });
+	const onUserClick = (): void =>
+		dispatch({ type: HADER_CONSTANTS.SHOW_USER_MENU, showUserMenu: !showUserMenu });
+	const onSearchClick = (): void =>
+		dispatch({ type: HADER_CONSTANTS.IS_SEARCH, isSearch: !isSearch });
 
 	const transformEmail = (email: string): string => {
 		const mailSymbolIndex = email.split('').findIndex((symbol: string) => symbol === '@');

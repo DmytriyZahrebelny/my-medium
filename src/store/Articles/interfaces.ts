@@ -29,6 +29,8 @@ export interface IArticleData {
 	};
 	createdAt: string;
 	body: string;
+	favorited: boolean;
+	favoritesCount: number;
 }
 
 export interface ICreatePostData {

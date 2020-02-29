@@ -1,3 +1,7 @@
+export interface ICommentsState {
+	comments: ICommentData[];
+}
+
 export interface ICommentData {
 	id: string;
 	createdAt: string;

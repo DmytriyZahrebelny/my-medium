@@ -1,10 +1,14 @@
 import { Dispatch } from 'redux';
 import { commentsApi } from '../../api/commentsApi';
 import { RootState } from '../configureStore';
-import { ICommentData, ICommentRequestData } from './interfaces';
+import { ICommentData, ICommentRequestData, ICommentsState } from './interfaces';
 
-interface ICommentsState {
-	comments: ICommentData[];
+export function typedAction<T extends string, P extends any>(
+	type: T,
+	payload: P
+): { type: T; payload: P };
+export function typedAction(type: number, payload?: any) {
+	return { type, payload };
 }
 
 enum ActionType {
@@ -16,15 +20,6 @@ enum ActionType {
 const initialState: ICommentsState = {
 	comments: [],
 };
-
-export function typedAction<T extends string>(type: T): { type: T };
-export function typedAction<T extends string, P extends any>(
-	type: T,
-	payload: P
-): { type: T; payload: P };
-export function typedAction(type: number, payload?: any) {
-	return { type, payload };
-}
 
 const getCommentsAction = (payload: ICommentsState) => typedAction(ActionType.COMMENTS, payload);
 

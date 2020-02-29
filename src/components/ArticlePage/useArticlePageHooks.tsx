@@ -15,9 +15,7 @@ export const useArticlePageHooks = (slug: string = '') => {
 	const dispatch = useDispatch();
 	const { user }: IUserData = useSelector((state: RootState) => state.authStore);
 	const { token }: tokenType = useSelector((state: RootState) => state.authStore);
-	const { articles }: IAllArticlesData = useSelector(
-		(state: RootState) => state.articlesStore.allArticles
-	);
+	const { articles }: IAllArticlesData = useSelector((state: RootState) => state.articlesStore);
 	const { comments }: IArticleCommentsData = useSelector((state: RootState) => state.commentsStore);
 	const { params }: IMatchParams = useRouteMatch();
 

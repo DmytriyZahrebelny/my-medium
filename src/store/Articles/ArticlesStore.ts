@@ -10,20 +10,6 @@ import {
 } from './interfaces';
 import { RootState } from '../configureStore';
 
-enum ActionType {
-	ALL_ARTICLES = 'ALL_ARTICLES',
-	CREATED_ARTICLE = 'CREATED_ARTICLE',
-	CHECK_PREFERENCE = 'CHECK_PREFERENCE',
-}
-
-const initialState: IState = {
-	allArticles: {
-		articles: [],
-	},
-	articleId: null,
-};
-
-export function typedAction<T extends string>(type: T): { type: T };
 export function typedAction<T extends string, P extends any>(
 	type: T,
 	payload: P
@@ -32,8 +18,30 @@ export function typedAction(type: number, payload?: any) {
 	return { type, payload };
 }
 
-const allArticlesAction = (payload: IAllArticlesData) =>
-	typedAction(ActionType.ALL_ARTICLES, payload);
+enum ActionType {
+	GET_ARTICLES = 'GET_ARTICLES',
+	INFINITY_ATTICALS = 'INFINITY_ATTICALS',
+	ARTICLE_BY_TAG = 'ARTICLE_BY_TAG',
+	CREATED_ARTICLE = 'CREATED_ARTICLE',
+	CHECK_PREFERENCE = 'CHECK_PREFERENCE',
+}
+
+const initialState: IState = {
+	articles: [],
+	articleId: null,
+};
+
+const getArticlesAction = (payload: IArticleData[]) =>
+	typedAction(ActionType.GET_ARTICLES, payload);
+
+const infinityLoadArticlesAction = (payload: IArticleData[]) =>
+	typedAction(ActionType.INFINITY_ATTICALS, payload);
+
+const getArticleByTagAction = (payload: IArticleData[]) =>
+	typedAction(ActionType.ARTICLE_BY_TAG, payload);
+
+const infinityLoadArticlesByTagAction = (payload: IArticleData[]) =>
+	typedAction(ActionType.INFINITY_ATTICALS, payload);
 
 const createdArticle = (payload: INewArticleData) =>
 	typedAction(ActionType.CREATED_ARTICLE, payload);
@@ -41,13 +49,28 @@ const createdArticle = (payload: INewArticleData) =>
 const checkPreferenceArticleAction = (payload: IArticleData[]) =>
 	typedAction(ActionType.CHECK_PREFERENCE, payload);
 
-export const allArticlesAsyncAction = (page: number = 0) => async (
+export const getArticlesAsyncAction = (page: number = 0) => async (
 	dispatch: Dispatch,
 	store: () => RootState
 ) => {
 	const { token } = store().authStore;
 	const response: IAllArticlesData = await articlesApi.allArticles(page, token);
-	dispatch(allArticlesAction(response));
+	if (page) {
+		dispatch(infinityLoadArticlesAction(response.articles));
+	} else {
+		dispatch(getArticlesAction(response.articles));
+	}
+};
+
+export const getArticleByTagAsyncAction = (tag: string, page: number = 0) => async (
+	dispatch: Dispatch
+) => {
+	const response: IAllArticlesData = await articlesApi.getArticlesByTag(page, tag);
+	if (page) {
+		dispatch(infinityLoadArticlesByTagAction(response.articles));
+	} else {
+		dispatch(getArticleByTagAction(response.articles));
+	}
 };
 
 export const addNewPostAsyncAction = (data: ICreatePostData) => async (
@@ -64,7 +87,7 @@ export const checkPreferenceArticleAsyncAction = (favorited: boolean, slug: stri
 	store: () => RootState
 ) => {
 	const { token } = store().authStore;
-	const { articles }: IAllArticlesData = store().articlesStore.allArticles;
+	const { articles }: IAllArticlesData = store().articlesStore;
 	const articleIndex: number = articles.findIndex((article: IArticleData) => article.slug === slug);
 
 	if (favorited) {
@@ -79,34 +102,41 @@ export const checkPreferenceArticleAsyncAction = (favorited: boolean, slug: stri
 };
 
 type articlesAction = ReturnType<
-	typeof allArticlesAction | typeof createdArticle | typeof checkPreferenceArticleAction
+	| typeof getArticlesAction
+	| typeof createdArticle
+	| typeof checkPreferenceArticleAction
+	| typeof getArticleByTagAction
+	| typeof infinityLoadArticlesAction
+	| typeof infinityLoadArticlesByTagAction
 >;
 
 export default (state = initialState, action: articlesAction) => {
 	switch (action.type) {
-		case ActionType.ALL_ARTICLES:
+		case ActionType.GET_ARTICLES:
 			return {
 				...state,
-				allArticles: {
-					...state.allArticles,
-					articles: [...state.allArticles.articles, ...action.payload.articles],
-				},
+				articles: action.payload,
+			};
+		case ActionType.INFINITY_ATTICALS:
+			return {
+				...state,
+				articles: [...state.articles, ...action.payload],
 			};
 		case ActionType.CREATED_ARTICLE:
 			return {
 				...state,
-				allArticles: {
-					...state.allArticles,
-					articles: [action.payload.article, ...state.allArticles.articles],
-				},
+				articles: [action.payload.article, ...state.articles],
 				articleId: action.payload.article.slug,
+			};
+		case ActionType.ARTICLE_BY_TAG:
+			return {
+				...state,
+				articles: action.payload,
 			};
 		case ActionType.CHECK_PREFERENCE:
 			return {
 				...state,
-				allArticles: {
-					articles: [...action.payload],
-				},
+				articles: [...action.payload],
 			};
 		default:
 			return state;

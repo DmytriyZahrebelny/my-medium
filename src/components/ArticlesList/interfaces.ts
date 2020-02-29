@@ -1,3 +1,11 @@
+export interface IArticlesList {
+	articles: IArticlesData[];
+}
+
+export interface IObserverData {
+	current: any;
+}
+
 export interface IArticlesData {
 	title: string;
 	slug: string;

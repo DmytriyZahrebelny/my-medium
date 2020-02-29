@@ -4,13 +4,6 @@ import { settingsApi } from '../../api/settingsApi';
 import { IAuth, ILoginResponse, ISignIn, ISignUp } from './interfaces';
 import { RootState } from '../configureStore';
 
-enum ActionType {
-	LOGIN = 'LOGIN',
-	LOGOUT = 'LOGOUT',
-	ERRORS = 'ERRORS',
-	UPDATE = 'UPDATE',
-}
-
 export function typedAction<T extends string>(type: T): { type: T };
 export function typedAction<T extends string, P extends any>(
 	type: T,
@@ -18,6 +11,13 @@ export function typedAction<T extends string, P extends any>(
 ): { type: T; payload: P };
 export function typedAction(type: string, payload?: any) {
 	return { type, payload };
+}
+
+enum ActionType {
+	LOGIN = 'LOGIN',
+	LOGOUT = 'LOGOUT',
+	ERRORS = 'ERRORS',
+	UPDATE = 'UPDATE',
 }
 
 const initialState: IAuth = {

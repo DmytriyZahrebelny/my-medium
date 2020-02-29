@@ -7,12 +7,11 @@ import './articlePage.sass';
 
 const ArticlePage: React.FC = () => {
 	const { token, articles, params } = useArticlePageHooks();
-
 	if (!articles.length) {
 		return null;
 	}
 
-	const articlleData = articles.find((el: IArticleData) => el.slug === params.id);
+	const articlleData: IArticleData = articles.find((el: IArticleData) => el.slug === params.id);
 	const { title, body, createdAt, author }: IArticleData = articlleData;
 
 	return (

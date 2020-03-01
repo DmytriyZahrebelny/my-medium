@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import { RootState } from '../../store/configureStore';
 import { IArticlesList, IObserverData } from './interfaces';
-import * as authAction from '../../store/Auth/AuthStore';
 import * as articlesAction from '../../store/Articles/ArticlesStore';
 
 export const useArticlesListHooks = () => {
@@ -15,15 +14,13 @@ export const useArticlesListHooks = () => {
 	const { tag = '' } = useParams();
 
 	useEffect(() => {
-		if (pathname === '/' || pathname === '/posts') {
-			Promise.resolve(dispatch(authAction.loginAsyncAction())).then(() => {
-				dispatch(articlesAction.getArticlesAsyncAction());
-			});
+		if ((pathname === '/' || pathname === '/posts') && !articles.length) {
+			dispatch(articlesAction.getArticlesAsyncAction());
 		} else if (pathname === `/bytag/${tag}`) {
 			dispatch(articlesAction.getArticleByTagAsyncAction(tag));
 		}
 		setNumberPage(1);
-	}, [dispatch, pathname, tag]);
+	}, [dispatch, pathname, tag, articles]);
 
 	useEffect(() => {
 		if ((pathname === '/' || pathname === '/posts') && loading) {

@@ -14,6 +14,7 @@ export function typedAction(type: string, payload?: any) {
 }
 
 enum ActionType {
+	SIGN_IN = 'SIGN_IN',
 	LOGIN = 'LOGIN',
 	LOGOUT = 'LOGOUT',
 	ERRORS = 'ERRORS',
@@ -31,9 +32,10 @@ export const logoutAction = () => {
 	window.localStorage.removeItem('__token');
 	return typedAction(ActionType.LOGOUT);
 };
+const signInAction = (payload: ILoginResponse) => typedAction(ActionType.SIGN_IN, payload);
 const loginAction = (payload: ILoginResponse) => typedAction(ActionType.LOGIN, payload);
-const authErrorAction = (payload: any) => typedAction(ActionType.ERRORS, payload);
-const updateUserData = (payload: any) => typedAction(ActionType.UPDATE, payload);
+const authErrorAction = (payload: string[]) => typedAction(ActionType.ERRORS, payload);
+const updateUserData = (payload: ILoginResponse) => typedAction(ActionType.UPDATE, payload);
 
 export const loginAsyncAction = () => async (dispatch: Dispatch) => {
 	try {
@@ -53,7 +55,7 @@ export const signInAsyncAction = (formData: ISignIn) => async (dispatch: Dispatc
 	if (data instanceof Array) {
 		dispatch(authErrorAction(data));
 	} else {
-		dispatch(loginAction(data));
+		dispatch(signInAction(data));
 	}
 };
 
@@ -63,7 +65,7 @@ export const signUpAsyncAction = (formData: ISignUp) => async (dispatch: Dispatc
 	if (data instanceof Array) {
 		dispatch(authErrorAction(data));
 	} else {
-		dispatch(loginAction(data));
+		dispatch(signInAction(data));
 	}
 };
 
@@ -73,7 +75,6 @@ export const updateUserDataAsyncAction = (formData: any) => async (
 ) => {
 	const { token } = store().authStore;
 	const data: ILoginResponse | string[] = await settingsApi.updateUserData(formData, token);
-
 	if (data instanceof Array) {
 		dispatch(authErrorAction(data));
 	} else {
@@ -82,17 +83,28 @@ export const updateUserDataAsyncAction = (formData: any) => async (
 };
 
 type AuthAction = ReturnType<
-	typeof loginAction | typeof logoutAction | typeof authErrorAction | typeof updateUserData
+	| typeof signInAction
+	| typeof logoutAction
+	| typeof authErrorAction
+	| typeof updateUserData
+	| typeof loginAction
 >;
 
 export default (state = initialState, action: AuthAction): IAuth => {
 	switch (action.type) {
-		case ActionType.LOGIN:
+		case ActionType.SIGN_IN:
 			return {
 				...action.payload,
 				token: action.payload.user.token,
 				errorsMesages: null,
 				redirectTo: '/',
+			};
+		case ActionType.LOGIN:
+			return {
+				...action.payload,
+				token: action.payload.user.token,
+				errorsMesages: null,
+				redirectTo: null,
 			};
 		case ActionType.LOGOUT:
 			return { user: null, token: null, errorsMesages: null, redirectTo: null };

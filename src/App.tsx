@@ -9,7 +9,6 @@ import ArticlePage from './components/ArticlePage/ArticlePage';
 import NewPost from './components/NewPost/NewPost';
 import SettingsPage from './components/SettingsPage/SettingsPage';
 import * as authAction from './store/Auth/AuthStore';
-import * as articlesAction from './store/Articles/ArticlesStore';
 import { RootState } from './store/configureStore';
 import { IAuth } from './store/Auth/interfaces';
 
@@ -20,7 +19,6 @@ const App: React.FC = () => {
 
 	useEffect(() => {
 		dispatch(authAction.loginAsyncAction());
-		dispatch(articlesAction.getArticlesAsyncAction());
 	}, [dispatch]);
 
 	useEffect(() => {
@@ -38,13 +36,13 @@ const App: React.FC = () => {
 					<Route exact path='/bytag/:tag' component={ArticlesList} />
 					<Route path='/signin' component={SignIn} />
 					<Route path='/signup' component={SignUp} />
-					<Route path='/posts/:id' component={ArticlePage} />
+					<Route path='/posts/:number/:id' component={ArticlePage} />
 				</Switch>
 			) : (
 				<Switch>
 					<Route exact path={['/', '/posts']} component={ArticlesList} />
 					<Route exact path='/bytag/:tag' component={ArticlesList} />
-					<Route path='/posts/:id' component={ArticlePage} />
+					<Route path='/posts/:number/:id' component={ArticlePage} />
 					<Route path='/new-post' component={NewPost} />
 					<Route psth='/settings' component={SettingsPage} />
 				</Switch>

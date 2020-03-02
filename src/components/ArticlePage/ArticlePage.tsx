@@ -7,6 +7,7 @@ import './articlePage.sass';
 
 const ArticlePage: React.FC = () => {
 	const { token, articles, params } = useArticlePageHooks();
+
 	if (!articles.length) {
 		return null;
 	}

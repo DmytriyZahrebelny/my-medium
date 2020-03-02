@@ -22,6 +22,7 @@ export interface IArticlesData {
 export interface IArticlesProps {
 	articles: any[];
 	lastArticlesLinkRef: any;
+	numberPage: number;
 }
 
 export interface IPreferenceArticleProps {

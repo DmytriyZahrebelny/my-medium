@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { RootState } from '../../store/configureStore';
 import {
@@ -10,9 +11,11 @@ import {
 	IUserData,
 } from './interfaces';
 import * as actions from '../../store/Comments/CommentsStore';
+import * as articlesAction from '../../store/Articles/ArticlesStore';
 
 export const useArticlePageHooks = (slug: string = '') => {
 	const dispatch = useDispatch();
+	const { number } = useParams();
 	const { user }: IUserData = useSelector((state: RootState) => state.authStore);
 	const { token }: tokenType = useSelector((state: RootState) => state.authStore);
 	const { articles }: IAllArticlesData = useSelector((state: RootState) => state.articlesStore);
@@ -38,6 +41,12 @@ export const useArticlePageHooks = (slug: string = '') => {
 			dispatch(actions.deleteCommentsAsyncAction(slug, commentId));
 		}
 	};
+
+	useEffect(() => {
+		if (!articles.length) {
+			dispatch(articlesAction.getArticlesAsyncAction(Number(number) - 1));
+		}
+	}, [number, articles, dispatch]);
 
 	return {
 		token,

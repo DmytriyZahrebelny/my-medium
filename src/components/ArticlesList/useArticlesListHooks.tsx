@@ -14,13 +14,14 @@ export const useArticlesListHooks = () => {
 	const { tag = '' } = useParams();
 
 	useEffect(() => {
-		if ((pathname === '/' || pathname === '/posts') && !articles.length) {
+		if (pathname === '/' || pathname === '/posts') {
 			dispatch(articlesAction.getArticlesAsyncAction());
+			setNumberPage(1);
 		} else if (pathname === `/bytag/${tag}`) {
 			dispatch(articlesAction.getArticleByTagAsyncAction(tag));
+			setNumberPage(1);
 		}
-		setNumberPage(1);
-	}, [dispatch, pathname, tag, articles]);
+	}, [dispatch, pathname, tag]);
 
 	useEffect(() => {
 		if ((pathname === '/' || pathname === '/posts') && loading) {
@@ -53,5 +54,6 @@ export const useArticlesListHooks = () => {
 	return {
 		articles,
 		lastArticlesLinkRef,
+		numberPage,
 	};
 };

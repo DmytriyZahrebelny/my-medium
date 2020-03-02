@@ -4,7 +4,7 @@ import PreferenceArticle from '../PreferenceArticle/PreferenceArticle';
 import { IArticlesData, IArticlesProps } from '../interfaces';
 import './articlesLink.sass';
 
-const ArticlesLink: React.FC<IArticlesProps> = ({ articles, lastArticlesLinkRef }) => (
+const ArticlesLink: React.FC<IArticlesProps> = ({ articles, lastArticlesLinkRef, numberPage }) => (
 	<div className='articles__container'>
 		{articles.map(
 			({ title, slug, author, createdAt, body, favoritesCount, favorited }: IArticlesData) => (
@@ -17,7 +17,7 @@ const ArticlesLink: React.FC<IArticlesProps> = ({ articles, lastArticlesLinkRef 
 						</div>
 						<PreferenceArticle favorited={favorited} favoritesCount={favoritesCount} slug={slug} />
 					</div>
-					<Link to={`/posts/${slug}`}>
+					<Link to={`/posts/${numberPage}/${slug}`}>
 						<h2 className='article-link__name'>{title}</h2>
 						<p className='article-link__text'>{body}</p>
 					</Link>

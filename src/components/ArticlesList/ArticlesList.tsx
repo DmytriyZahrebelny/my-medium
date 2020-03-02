@@ -5,7 +5,7 @@ import { useArticlesListHooks } from './useArticlesListHooks';
 import './articlesList.sass';
 
 const ArticlesList = () => {
-	const { articles, lastArticlesLinkRef } = useArticlesListHooks();
+	const { articles, lastArticlesLinkRef, numberPage } = useArticlesListHooks();
 
 	if (!articles.length) {
 		return null;
@@ -13,7 +13,11 @@ const ArticlesList = () => {
 
 	return (
 		<div className='articles'>
-			<ArticlesLink articles={articles} lastArticlesLinkRef={lastArticlesLinkRef} />
+			<ArticlesLink
+				articles={articles}
+				lastArticlesLinkRef={lastArticlesLinkRef}
+				numberPage={numberPage}
+			/>
 			<Tags />
 		</div>
 	);

@@ -1,37 +1,9 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import { AuthState, authInitialState } from './AuthStore/AuthStore';
-
-interface IAuth {
-	user: {
-		id: number;
-		email: string;
-		createdAt: string;
-		updatedAt: string;
-		username: string;
-		bio: any;
-		image: string | null;
-		token: string;
-	} | null;
-	errorsMesages: string[] | null;
-	token: string | null;
-	redirectTo: null | string;
-}
-
-export interface ILoginResponse {
-	user: {
-		id: number;
-		email: string;
-		createdAt: string;
-		updatedAt: string;
-		username: string;
-		bio: any;
-		image: string | null;
-		token: string;
-	};
-}
+import { AuthState, authInitialState, IAuthState } from './AuthStore/AuthStore';
+import { ArticlesStore, articlesInitialState, IArticlesState } from './ArticlesStore/ArticlesStore';
 
 export interface IRootState {
-	state: IAuth;
+	state: IAuthState & IArticlesState;
 	dispatch: ({ type }: { type: string; payload?: any }) => void;
 }
 
@@ -39,18 +11,18 @@ const StoreContext = createContext({} as IRootState);
 
 const initialState = {
 	...authInitialState,
+	...articlesInitialState,
 };
 
 export const combineReducers = (...reducers: any) => {
-	return (prevState: any, value: any) => {
-		return reducers.reduce((newState: any, reducer: any) => {
-			return reducer(newState, value);
+	return (prevState: any, value: any) =>
+		reducers.reduce((newState: any, reducer: any) => {
+			return { ...newState, ...reducer(newState, value) };
 		}, prevState);
-	};
 };
 
 export const StoreProvider = ({ children }: any) => {
-	const [state, dispatch] = useReducer(combineReducers(AuthState), initialState);
+	const [state, dispatch] = useReducer(combineReducers(AuthState, ArticlesStore), initialState);
 
 	return <StoreContext.Provider value={{ state, dispatch }}>{children}</StoreContext.Provider>;
 };

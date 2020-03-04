@@ -1,9 +1,24 @@
 import { useStore, IRootState } from '../globalStore';
 import { authApi } from '../../api/authApi';
 import { settingsApi } from '../../api/settingsApi';
-import { IAuth } from './interfaces';
 
-export const authInitialState: IAuth = {
+export interface IAuthState {
+	user: {
+		id: number;
+		email: string;
+		createdAt: string;
+		updatedAt: string;
+		username: string;
+		bio: any;
+		image: string | null;
+		token: string;
+	} | null;
+	errorsMesages: string[] | null;
+	token: string | null;
+	redirectTo: null | string;
+}
+
+export const authInitialState: IAuthState = {
 	user: null,
 	errorsMesages: null,
 	token: null,
@@ -57,7 +72,7 @@ export const useAuthStore = () => {
 
 type Action = { type: string; payload?: any };
 
-export const AuthState = (state: IAuth, action: Action) => {
+export const AuthState = (state: IAuthState, action: Action) => {
 	switch (action.type) {
 		case 'SIGN_IN':
 			return {

@@ -2,6 +2,7 @@ import React from 'react';
 import Icon from '../../components/Icon';
 import { IPreferenceArticleProps } from '../interfaces';
 import { useAuthStore } from '../../../store/AuthStore/AuthStore';
+import { useArticlesStore } from '../../../store/ArticlesStore/ArticlesStore';
 import './preferenceArticle.sass';
 
 const PreferenceArticle: React.FC<IPreferenceArticleProps> = ({
@@ -10,9 +11,10 @@ const PreferenceArticle: React.FC<IPreferenceArticleProps> = ({
 	slug,
 }) => {
 	const { token } = useAuthStore();
+	const { checkPreferenceArticleAction } = useArticlesStore();
 	const onButtonCklick = () => {
 		if (token) {
-			// dispatch(actions.checkPreferenceArticleAsyncAction(favorited, slug));
+			checkPreferenceArticleAction(favorited, slug);
 		}
 	};
 

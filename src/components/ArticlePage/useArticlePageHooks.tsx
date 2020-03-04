@@ -1,27 +1,27 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { RootState } from '../../store/configureStore';
 import { useAuthStore } from '../../store/AuthStore/AuthStore';
+import { useArticlesStore } from '../../store/ArticlesStore/ArticlesStore';
 import { IAllArticlesData, IMatchParams, IArticleCommentsData, IUserData } from './interfaces';
+
 import * as actions from '../../store/Comments/CommentsStore';
 
 export const useArticlePageHooks = (slug: string = '') => {
-	const dispatch = useDispatch();
 	const { number } = useParams();
-	const { user, token }: IUserData = useAuthStore();
-	const { articles }: IAllArticlesData = useSelector((state: RootState) => state.articlesStore);
-	const { comments }: IArticleCommentsData = useSelector((state: RootState) => state.commentsStore);
+	// const { comments }: IArticleCommentsData = useSelector((state: RootState) => state.commentsStore);
+	const comments: any = [];
 	const { params }: IMatchParams = useRouteMatch();
-
+	const { user, token } = useAuthStore();
+	const { articles, getArticlesAction }: any = useArticlesStore();
+	console.log(articles);
 	const { handleSubmit, getFieldProps } = useFormik({
 		initialValues: {
 			comment: '',
 		},
 		onSubmit: ({ comment }) => {
 			if (comment.length) {
-				dispatch(actions.createCommentsAsyncAction(slug, comment));
+				// dispatch(actions.createCommentsAsyncAction(slug, comment));
 			}
 		},
 	});
@@ -29,17 +29,17 @@ export const useArticlePageHooks = (slug: string = '') => {
 	const onDeleteCommentClick = async (evt: React.MouseEvent<HTMLButtonElement>) => {
 		const currentElement = (evt.target as HTMLButtonElement).closest('.comments__delete');
 
-		if (currentElement) {
-			const commentId: string = currentElement.id;
-			dispatch(actions.deleteCommentsAsyncAction(slug, commentId));
-		}
+		// if (currentElement) {
+		// 	const commentId: string = currentElement.id;
+		// 	// dispatch(actions.deleteCommentsAsyncAction(slug, commentId));
+		// }
 	};
 
 	useEffect(() => {
 		if (!articles.length) {
-			// dispatch(articlesAction.getArticlesAsyncAction(Number(number) - 1));
+			getArticlesAction(Number(number) - 1);
 		}
-	}, [number, articles, dispatch]);
+	}, [number, articles]);
 
 	return {
 		token,
@@ -50,6 +50,5 @@ export const useArticlePageHooks = (slug: string = '') => {
 		getFieldProps,
 		comments,
 		onDeleteCommentClick,
-		dispatch,
 	};
 };

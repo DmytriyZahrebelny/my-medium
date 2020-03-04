@@ -7,13 +7,13 @@ import './tags.sass';
 
 const Tags = () => {
 	const [activeLink, setActiveLink] = useState<string>('');
-	const tags: string[] = useSelector((state: RootState) => state.tagsStore);
-	const dispatch = useDispatch();
+	const tags: string[] = [];
+	// const dispatch = useDispatch();
 	const { tag = '' } = useParams();
 
-	useEffect(() => {
-		dispatch(actions.getTagsAsyncAction());
-	}, [dispatch]);
+	// useEffect(() => {
+	// 	dispatch(actions.getTagsAsyncAction());
+	// }, [dispatch]);
 
 	if (!tags.length) {
 		return null;

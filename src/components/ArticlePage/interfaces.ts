@@ -2,8 +2,6 @@ export interface IAllArticlesData {
 	articles: any[];
 }
 
-export type tokenType = { token: string | null };
-
 export interface IUserData {
 	user: {
 		id: number;
@@ -15,6 +13,7 @@ export interface IUserData {
 		image: string | null;
 		token: string;
 	} | null;
+	token: string | null;
 }
 
 export interface IArticleData {

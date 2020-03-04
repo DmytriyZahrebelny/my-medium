@@ -32,7 +32,7 @@ export const getCommentsAsyncAction = (slug: string) => async (
 	dispatch: Dispatch,
 	store: () => RootState
 ) => {
-	const { token } = store().authStore;
+	const token = null;
 	const response: ICommentsState = await commentsApi.getComments(slug, token);
 	dispatch(getCommentsAction(response));
 };
@@ -41,7 +41,7 @@ export const deleteCommentsAsyncAction = (slug: string, commentId: string) => as
 	dispatch: Dispatch,
 	store: () => RootState
 ) => {
-	const { token } = store().authStore;
+	const token = null;
 	const { comments } = store().commentsStore;
 	await commentsApi.deleteComments(slug, commentId, token);
 	const newComments: ICommentData[] = comments.filter(({ id }: any) => id !== Number(commentId));
@@ -52,7 +52,7 @@ export const createCommentsAsyncAction = (slug: string, comment: string) => asyn
 	dispatch: Dispatch,
 	store: () => RootState
 ) => {
-	const { token } = store().authStore;
+	const token = null;
 	const { comments } = store().commentsStore;
 	const response: ICommentRequestData = await commentsApi.createComments(slug, comment, token);
 	const newComments: ICommentData[] = [response.comment, ...comments];

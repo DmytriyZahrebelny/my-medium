@@ -1,9 +1,7 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import Icon from '../../components/Icon';
 import { IPreferenceArticleProps } from '../interfaces';
-import * as actions from '../../../store/Articles/ArticlesStore';
-import { RootState } from '../../../store/configureStore';
+import { useAuthStore } from '../../../store/AuthStore/AuthStore';
 import './preferenceArticle.sass';
 
 const PreferenceArticle: React.FC<IPreferenceArticleProps> = ({
@@ -11,11 +9,10 @@ const PreferenceArticle: React.FC<IPreferenceArticleProps> = ({
 	favorited,
 	slug,
 }) => {
-	const dispatch = useDispatch();
-	const { token } = useSelector((state: RootState) => state.authStore);
+	const { token } = useAuthStore();
 	const onButtonCklick = () => {
 		if (token) {
-			dispatch(actions.checkPreferenceArticleAsyncAction(favorited, slug));
+			// dispatch(actions.checkPreferenceArticleAsyncAction(favorited, slug));
 		}
 	};
 

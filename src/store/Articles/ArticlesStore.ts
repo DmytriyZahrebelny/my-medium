@@ -53,7 +53,8 @@ export const getArticlesAsyncAction = (page: number = 0) => async (
 	dispatch: Dispatch,
 	store: () => RootState
 ) => {
-	const { token } = store().authStore;
+	const token = null;
+	// const { token } = store().authStore;
 	const response: IAllArticlesData = await articlesApi.allArticles(page, token);
 	if (page) {
 		dispatch(infinityLoadArticlesAction(response.articles));
@@ -77,7 +78,9 @@ export const addNewPostAsyncAction = (data: ICreatePostData) => async (
 	dispatch: Dispatch,
 	store: () => RootState
 ) => {
-	const { token } = store().authStore;
+	// const { token } = store().authStore;
+	const token = '';
+
 	const response: INewArticleData = await newPostApi.createPost(data, token);
 	dispatch(createdArticle(response));
 };
@@ -86,7 +89,9 @@ export const checkPreferenceArticleAsyncAction = (favorited: boolean, slug: stri
 	dispatch: Dispatch,
 	store: () => RootState
 ) => {
-	const { token } = store().authStore;
+	// const { token } = store().authStore;
+	const token = null;
+
 	const { articles }: IAllArticlesData = store().articlesStore;
 	const articleIndex: number = articles.findIndex((article: IArticleData) => article.slug === slug);
 

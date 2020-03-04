@@ -1,13 +1,10 @@
 import { useReducer, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import * as actions from '../../store/Auth/AuthStore';
-import { RootState } from '../../store/configureStore';
+import { useAuthStore } from '../../store/AuthStore/AuthStore';
 import { headerReducer, initialState, HADER_CONSTANTS } from './useHeaderReducer';
 
 export const useHeaderHooks = () => {
-	const reduxDispatch = useDispatch();
 	const [{ showUserMenu, isSearch }, dispatch] = useReducer(headerReducer, initialState);
-	const user = useSelector((state: RootState) => state.authStore.user);
+	const { user, logoutAction } = useAuthStore();
 
 	useEffect(() => {
 		const removeUserMenu = (evt: any): void => {
@@ -31,10 +28,6 @@ export const useHeaderHooks = () => {
 		return email.slice(0, mailSymbolIndex);
 	};
 
-	const logoutClick = (): void => {
-		reduxDispatch(actions.logoutAction());
-	};
-
 	return {
 		showUserMenu,
 		isSearch,
@@ -42,6 +35,6 @@ export const useHeaderHooks = () => {
 		onUserClick,
 		onSearchClick,
 		transformEmail,
-		logoutClick,
+		logoutAction,
 	};
 };

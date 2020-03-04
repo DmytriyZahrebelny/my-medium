@@ -15,7 +15,7 @@ export const useArticlesListHooks = () => {
 
 	useEffect(() => {
 		if (pathname === '/' || pathname === '/posts') {
-			dispatch(articlesAction.getArticlesAsyncAction());
+			// dispatch(articlesAction.getArticlesAsyncAction());
 			setNumberPage(1);
 		} else if (pathname === `/bytag/${tag}`) {
 			dispatch(articlesAction.getArticleByTagAsyncAction(tag));
@@ -25,7 +25,7 @@ export const useArticlesListHooks = () => {
 
 	useEffect(() => {
 		if ((pathname === '/' || pathname === '/posts') && loading) {
-			dispatch(articlesAction.getArticlesAsyncAction(numberPage));
+			// dispatch(articlesAction.getArticlesAsyncAction(numberPage));
 			setLoading(false);
 		} else if (tag && loading) {
 			dispatch(articlesAction.getArticleByTagAsyncAction(tag, numberPage));

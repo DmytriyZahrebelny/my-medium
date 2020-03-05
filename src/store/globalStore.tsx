@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import { AuthState, authInitialState, IAuthState } from './AuthStore/AuthStore';
-import { ArticlesStore, articlesInitialState, IArticlesState } from './ArticlesStore/ArticlesStore';
+import { AuthState, authInitialState } from './AuthStore/AuthStore';
+import { ArticlesStore, articlesInitialState } from './ArticlesStore/ArticlesStore';
 import { CommentsStore, commentsInitialState } from './CommentsStore/CommentsStore';
-import { ICommentsState } from './CommentsStore/interfaces';
+import { StoreData } from './interfaces';
 
 export interface IRootState {
-	state: IAuthState & IArticlesState & ICommentsState;
+	state: StoreData;
 	dispatch: ({ type }: { type: string; payload?: any }) => void;
 }
 

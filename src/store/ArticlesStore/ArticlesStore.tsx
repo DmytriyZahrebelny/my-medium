@@ -6,12 +6,8 @@ import {
 	IResponseArticlesData,
 	IArticleData,
 	INewArticleFormData,
+	IArticlesState,
 } from './interfaces';
-
-export interface IArticlesState {
-	articles: IArticleData[];
-	articleId: null | string;
-}
 
 export const articlesInitialState: IArticlesState = {
 	articles: [],
@@ -19,12 +15,14 @@ export const articlesInitialState: IArticlesState = {
 };
 
 export const useArticlesStore = () => {
-	const { state, dispatch }: IRootState = useStore();
+	const {
+		state: { articles, articleId, token },
+		dispatch,
+	}: IRootState = useStore();
 	return {
-		articles: state.articles,
-		articleId: state.articleId,
+		articles,
+		articleId,
 		async getArticlesAction(page: number = 0) {
-			const { token } = state;
 			const response: IResponseArticlesData = await articlesApi.allArticles(page, token);
 			if (page) {
 				dispatch({ type: 'INFINITY_ATTICALS', payload: response.articles });
@@ -41,13 +39,10 @@ export const useArticlesStore = () => {
 			}
 		},
 		async addNewPostAction(data: INewArticleFormData) {
-			const { token } = state;
 			const response = await newPostApi.createPost(data, token);
 			dispatch({ type: 'CREATED_ARTICLE', payload: response });
 		},
 		async checkPreferenceArticleAction(favorited: boolean, slug: string) {
-			const { token } = state;
-			const { articles }: IResponseArticlesData = state;
 			const articleIndex: number = articles.findIndex(
 				(article: IArticleData) => article.slug === slug
 			);

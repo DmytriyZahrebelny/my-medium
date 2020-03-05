@@ -1,23 +1,7 @@
 import { useStore, IRootState } from '../globalStore';
 import { authApi } from '../../api/authApi';
 import { settingsApi } from '../../api/settingsApi';
-import { ILoginResponse, ISignIn, ISignUp } from './interfaces';
-
-export interface IAuthState {
-	user: {
-		id: number;
-		email: string;
-		createdAt: string;
-		updatedAt: string;
-		username: string;
-		bio: any;
-		image: string | null;
-		token: string;
-	} | null;
-	errorsMesages: string[] | null;
-	token: string | null;
-	redirectTo: null | string;
-}
+import { ILoginResponse, ISignIn, ISignUp, IAuthState } from './interfaces';
 
 export const authInitialState: IAuthState = {
 	user: null,
@@ -27,12 +11,15 @@ export const authInitialState: IAuthState = {
 };
 
 export const useAuthStore = () => {
-	const { state, dispatch }: IRootState = useStore();
+	const {
+		state: { user, token, redirectTo, errorsMesages },
+		dispatch,
+	}: IRootState = useStore();
 	return {
-		user: state.user,
-		token: state.token,
-		redirectTo: state.redirectTo,
-		errorsMesages: state.errorsMesages,
+		user,
+		token,
+		redirectTo,
+		errorsMesages,
 		async signInAction(values: ISignIn) {
 			const response: ILoginResponse | string[] = await authApi.signIn(values);
 			if (response instanceof Array) {
@@ -50,17 +37,14 @@ export const useAuthStore = () => {
 			}
 		},
 		async loginAction() {
-			const token: string | null = window.localStorage.getItem('__token');
-			if (token) {
-				const response = await authApi.getViewerData(token);
+			const tokenData: string | null = window.localStorage.getItem('__token');
+			if (tokenData) {
+				const response = await authApi.getViewerData(tokenData);
 				dispatch({ type: 'LOGIN', payload: response });
 			}
 		},
 		async updateDataAction(formData: any) {
-			const response: ILoginResponse | string[] = await settingsApi.updateUserData(
-				formData,
-				state.token
-			);
+			const response: ILoginResponse | string[] = await settingsApi.updateUserData(formData, token);
 			if (response instanceof Array) {
 				dispatch({ type: 'UPDATE', payload: response });
 			} else {

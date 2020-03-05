@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { IArticlesList, IObserverData } from './interfaces';
+import { IObserverData } from './interfaces';
 import { useArticlesStore } from '../../store/ArticlesStore/ArticlesStore';
 
 export const useArticlesListHooks = () => {

@@ -39,7 +39,7 @@ export const useNewPostHooks = () => {
 
 	useEffect(() => {
 		if (articleId) {
-			history.push(`/posts/${articleId}`);
+			history.push(`/posts/1/${articleId}`);
 		}
 	}, [articleId, history]);
 

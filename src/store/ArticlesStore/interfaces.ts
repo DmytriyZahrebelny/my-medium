@@ -1,8 +1,8 @@
-export interface IAllArticlesData {
+export interface IResponseArticlesData {
 	articles: IArticleData[];
 }
 
-export interface IState {
+export interface IArticlesState {
 	articles: IArticleData[];
 	articleId: null | string;
 }
@@ -33,7 +33,7 @@ export interface IArticleData {
 	favoritesCount: number;
 }
 
-export interface ICreatePostData {
+export interface INewArticleFormData {
 	title: string;
 	description: string;
 	body: string;

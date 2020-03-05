@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import Header from './components/Header/Header';
 import SignIn from './components/Auth/SignIn/SignIn';
 import SignUp from './components/Auth/SignUp/SignUp';
@@ -8,18 +7,15 @@ import ArticlesList from './components/ArticlesList/ArticlesList';
 import ArticlePage from './components/ArticlePage/ArticlePage';
 import NewPost from './components/NewPost/NewPost';
 import SettingsPage from './components/SettingsPage/SettingsPage';
-import * as authAction from './store/Auth/AuthStore';
-import { RootState } from './store/configureStore';
-import { IAuth } from './store/Auth/interfaces';
+import { useAuthStore } from './store/AuthStore/AuthStore';
 
 const App: React.FC = () => {
-	const { token, redirectTo }: IAuth = useSelector((state: RootState) => state.authStore);
+	const { token, redirectTo, loginAction } = useAuthStore();
 	const history = useHistory();
-	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(authAction.loginAsyncAction());
-	}, [dispatch]);
+		loginAction();
+	}, []);
 
 	useEffect(() => {
 		if (redirectTo) {

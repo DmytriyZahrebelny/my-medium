@@ -12,7 +12,7 @@ const ArticlePage: React.FC = () => {
 		return null;
 	}
 
-	const articlleData: IArticleData = articles.find((el: IArticleData) => el.slug === params.id);
+	const articlleData: any = articles.find((el: IArticleData) => el.slug === params.id);
 	const { title, body, createdAt, author }: IArticleData = articlleData;
 
 	return (

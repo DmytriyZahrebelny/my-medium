@@ -1,10 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import commentsStore from './Comments/CommentsStore';
 import tagsStore from './Tags/TagsStore';
 
 export const rootReducer = combineReducers({
-	commentsStore,
 	tagsStore,
 });
 

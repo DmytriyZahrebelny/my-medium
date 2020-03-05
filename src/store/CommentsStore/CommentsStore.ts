@@ -23,24 +23,28 @@ export const useCommentsStore = () => {
 			const newComments: ICommentData[] = comments.filter(
 				({ id }: any) => id !== Number(commentId)
 			);
-			dispatch({ type: 'DELETE_COMMENTS', payload: { comments: newComments } });
+			dispatch({ type: 'DELETE_COMMENTS', payload: newComments });
 		},
 		async createCommentsAction(slug: string, comment: string) {
 			const response: ICommentRequestData = await commentsApi.createComments(slug, comment, token);
 			const newComments: ICommentData[] = [response.comment, ...comments];
-			dispatch({ type: 'CREATE_COMMENTS', payload: { comments: newComments } });
+			dispatch({ type: 'CREATE_COMMENTS', payload: newComments });
 		},
 	};
 };
 
-export const CommentsStore = (state = commentsInitialState, action: any) => {
+type CommentsAction =
+	| { type: 'COMMENTS'; payload: any }
+	| { type: 'DELETE_COMMENTS' | 'CREATE_COMMENTS'; payload: any };
+
+export const CommentsStore = (state = commentsInitialState, action: CommentsAction) => {
 	switch (action.type) {
 		case 'COMMENTS':
 			return action.payload;
 		case 'DELETE_COMMENTS':
-			return action.payload;
+			return { comments: action.payload };
 		case 'CREATE_COMMENTS':
-			return action.payload;
+			return { comments: action.payload };
 		default:
 			return state;
 	}

@@ -61,14 +61,14 @@ export const useArticlesStore = () => {
 	};
 };
 
-type Action =
+type ArticlesAction =
 	| {
 			type: 'GET_ARTICLES' | 'INFINITY_ATTICALS' | 'ARTICLE_BY_TAG' | 'CHECK_PREFERENCE';
 			payload: IArticleData[];
 	  }
 	| { type: 'CREATED_ARTICLE'; payload: INewArticleData };
 
-export const ArticlesStore = (state = articlesInitialState, action: Action) => {
+export const ArticlesStore = (state = articlesInitialState, action: ArticlesAction) => {
 	switch (action.type) {
 		case 'GET_ARTICLES':
 			return {

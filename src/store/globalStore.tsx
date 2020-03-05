@@ -3,10 +3,10 @@ import { AuthState, authInitialState } from './AuthStore/AuthStore';
 import { ArticlesStore, articlesInitialState } from './ArticlesStore/ArticlesStore';
 import { CommentsStore, commentsInitialState } from './CommentsStore/CommentsStore';
 import { TagsStore } from './TagsStore/TagsStore';
-import { StoreData } from './interfaces';
+import { StoreTypeData, ReducersTypeData, ReducerType } from './interfaces';
 
 export interface IRootState {
-	state: StoreData;
+	state: StoreTypeData;
 	dispatch: ({ type }: { type: string; payload?: any }) => void;
 }
 
@@ -19,9 +19,9 @@ const initialState = {
 	tags: [],
 };
 
-export const combineReducers = (...reducers: any) => {
-	return (prevState: any, value: any) =>
-		reducers.reduce((newState: any, reducer: any) => {
+export const combineReducers = (...reducers: ReducersTypeData) => {
+	return (prevState: StoreTypeData, value: any) =>
+		reducers.reduce((newState: StoreTypeData, reducer: ReducerType) => {
 			return { ...newState, ...reducer(newState, value) };
 		}, prevState);
 };

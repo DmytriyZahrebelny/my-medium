@@ -58,12 +58,12 @@ export const useAuthStore = () => {
 	};
 };
 
-type Action =
+type AuthAction =
 	| { type: 'SIGN_IN' | 'LOGIN' | 'UPDATE'; payload: ILoginResponse }
 	| { type: 'LOGOUT'; payload: ILoginResponse }
 	| { type: 'ERRORS'; payload: string[] };
 
-export const AuthState = (state: IAuthState, action: Action) => {
+export const AuthState = (state: IAuthState = authInitialState, action: AuthAction) => {
 	switch (action.type) {
 		case 'SIGN_IN':
 			return {

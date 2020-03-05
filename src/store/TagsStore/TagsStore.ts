@@ -20,9 +20,9 @@ export const useTagsStore = () => {
 	};
 };
 
-type Action = { type: 'TAGS'; payload: string[] };
+type TagsAction = { type: 'TAGS'; payload: string[] };
 
-export const TagsStore = (state: string[] = [], action: Action) => {
+export const TagsStore = (state: string[] = [], action: TagsAction) => {
 	switch (action.type) {
 		case 'TAGS':
 			return action.payload;

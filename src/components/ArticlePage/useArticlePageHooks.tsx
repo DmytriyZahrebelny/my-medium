@@ -36,7 +36,7 @@ export const useArticlePageHooks = (slug: string = '') => {
 		if (!articles.length) {
 			getArticlesAction(Number(number) - 1);
 		}
-	}, [number, articles]);
+	}, [number, articles, getArticlesAction]);
 
 	return {
 		token,

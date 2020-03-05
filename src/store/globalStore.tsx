@@ -2,6 +2,7 @@ import React, { createContext, useContext, useReducer } from 'react';
 import { AuthState, authInitialState } from './AuthStore/AuthStore';
 import { ArticlesStore, articlesInitialState } from './ArticlesStore/ArticlesStore';
 import { CommentsStore, commentsInitialState } from './CommentsStore/CommentsStore';
+import { TagsStore } from './TagsStore/TagsStore';
 import { StoreData } from './interfaces';
 
 export interface IRootState {
@@ -15,6 +16,7 @@ const initialState = {
 	...authInitialState,
 	...articlesInitialState,
 	...commentsInitialState,
+	tags: [],
 };
 
 export const combineReducers = (...reducers: any) => {
@@ -26,7 +28,7 @@ export const combineReducers = (...reducers: any) => {
 
 export const StoreProvider = ({ children }: any) => {
 	const [state, dispatch] = useReducer(
-		combineReducers(AuthState, ArticlesStore, CommentsStore),
+		combineReducers(AuthState, ArticlesStore, CommentsStore, TagsStore),
 		initialState
 	);
 

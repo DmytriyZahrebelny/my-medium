@@ -24,6 +24,7 @@ export const useArticlesStore = () => {
 		articleId,
 		async getArticlesAction(page: number = 0) {
 			const response: IResponseArticlesData = await articlesApi.allArticles(page, token);
+
 			if (page) {
 				dispatch({ type: 'INFINITY_ATTICALS', payload: response.articles });
 			} else {

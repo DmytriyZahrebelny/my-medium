@@ -1,33 +1,16 @@
 import { useStore, IRootState } from '../globalStore';
 import { articlesApi } from '../../api/articlesApi';
 import { newPostApi } from '../../api/newPostApi';
+import {
+	INewArticleData,
+	IResponseArticlesData,
+	IArticleData,
+	INewArticleFormData,
+} from './interfaces';
 
 export interface IArticlesState {
 	articles: IArticleData[];
 	articleId: null | string;
-}
-
-export interface IAllArticlesData {
-	articles: IArticleData[];
-}
-
-interface IArticleData {
-	title: string;
-	slug: string;
-	author: {
-		image: string;
-		username: string;
-	};
-	createdAt: string;
-	body: string;
-	favorited: boolean;
-	favoritesCount: number;
-}
-
-export interface ICreatePostData {
-	title: string;
-	description: string;
-	body: string;
 }
 
 export const articlesInitialState: IArticlesState = {
@@ -42,7 +25,7 @@ export const useArticlesStore = () => {
 		articleId: state.articleId,
 		async getArticlesAction(page: number = 0) {
 			const { token } = state;
-			const response = await articlesApi.allArticles(page, token);
+			const response: IResponseArticlesData = await articlesApi.allArticles(page, token);
 			if (page) {
 				dispatch({ type: 'INFINITY_ATTICALS', payload: response.articles });
 			} else {
@@ -50,21 +33,21 @@ export const useArticlesStore = () => {
 			}
 		},
 		async getArticlesByTagAction(tag: string, page: number = 0) {
-			const response = await articlesApi.getArticlesByTag(page, tag);
+			const response: IResponseArticlesData = await articlesApi.getArticlesByTag(page, tag);
 			if (page) {
 				dispatch({ type: 'INFINITY_ATTICALS', payload: response.articles });
 			} else {
 				dispatch({ type: 'ARTICLE_BY_TAG', payload: response.articles });
 			}
 		},
-		async addNewPostAction(data: ICreatePostData) {
+		async addNewPostAction(data: INewArticleFormData) {
 			const { token } = state;
 			const response = await newPostApi.createPost(data, token);
 			dispatch({ type: 'CREATED_ARTICLE', payload: response });
 		},
 		async checkPreferenceArticleAction(favorited: boolean, slug: string) {
 			const { token } = state;
-			const { articles }: IAllArticlesData = state;
+			const { articles }: IResponseArticlesData = state;
 			const articleIndex: number = articles.findIndex(
 				(article: IArticleData) => article.slug === slug
 			);
@@ -82,7 +65,12 @@ export const useArticlesStore = () => {
 	};
 };
 
-type Action = { type: string; payload?: any };
+type Action =
+	| {
+			type: 'GET_ARTICLES' | 'INFINITY_ATTICALS' | 'ARTICLE_BY_TAG' | 'CHECK_PREFERENCE';
+			payload: IArticleData[];
+	  }
+	| { type: 'CREATED_ARTICLE'; payload: INewArticleData };
 
 export const ArticlesStore = (state = articlesInitialState, action: Action) => {
 	switch (action.type) {

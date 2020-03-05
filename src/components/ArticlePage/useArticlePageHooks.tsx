@@ -5,8 +5,6 @@ import { useAuthStore } from '../../store/AuthStore/AuthStore';
 import { useArticlesStore } from '../../store/ArticlesStore/ArticlesStore';
 import { IAllArticlesData, IMatchParams, IArticleCommentsData, IUserData } from './interfaces';
 
-import * as actions from '../../store/Comments/CommentsStore';
-
 export const useArticlePageHooks = (slug: string = '') => {
 	const { number } = useParams();
 	// const { comments }: IArticleCommentsData = useSelector((state: RootState) => state.commentsStore);

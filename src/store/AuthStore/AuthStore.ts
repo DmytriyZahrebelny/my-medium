@@ -1,6 +1,7 @@
 import { useStore, IRootState } from '../globalStore';
 import { authApi } from '../../api/authApi';
 import { settingsApi } from '../../api/settingsApi';
+import { ILoginResponse, ISignIn, ISignUp } from './interfaces';
 
 export interface IAuthState {
 	user: {
@@ -32,31 +33,34 @@ export const useAuthStore = () => {
 		token: state.token,
 		redirectTo: state.redirectTo,
 		errorsMesages: state.errorsMesages,
-		signInAction: async (values: any) => {
-			const response = await authApi.signIn(values);
+		async signInAction(values: ISignIn) {
+			const response: ILoginResponse | string[] = await authApi.signIn(values);
 			if (response instanceof Array) {
 				dispatch({ type: 'ERRORS', payload: response });
 			} else {
 				dispatch({ type: 'SIGN_IN', payload: response });
 			}
 		},
-		signUpAction: async (values: any) => {
-			const response = await authApi.signUp(values);
+		async signUpAction(values: ISignUp) {
+			const response: ILoginResponse | string[] = await authApi.signUp(values);
 			if (response instanceof Array) {
 				dispatch({ type: 'ERRORS', payload: response });
 			} else {
 				dispatch({ type: 'SIGN_IN', payload: response });
 			}
 		},
-		loginAction: async () => {
-			const token = window.localStorage.getItem('__token');
+		async loginAction() {
+			const token: string | null = window.localStorage.getItem('__token');
 			if (token) {
 				const response = await authApi.getViewerData(token);
 				dispatch({ type: 'LOGIN', payload: response });
 			}
 		},
-		updateDataAction: async (formData: any) => {
-			const response = await settingsApi.updateUserData(formData, state.token);
+		async updateDataAction(formData: any) {
+			const response: ILoginResponse | string[] = await settingsApi.updateUserData(
+				formData,
+				state.token
+			);
 			if (response instanceof Array) {
 				dispatch({ type: 'UPDATE', payload: response });
 			} else {
@@ -70,7 +74,10 @@ export const useAuthStore = () => {
 	};
 };
 
-type Action = { type: string; payload?: any };
+type Action =
+	| { type: 'SIGN_IN' | 'LOGIN' | 'UPDATE'; payload: ILoginResponse }
+	| { type: 'LOGOUT'; payload: ILoginResponse }
+	| { type: 'ERRORS'; payload: string[] };
 
 export const AuthState = (state: IAuthState, action: Action) => {
 	switch (action.type) {

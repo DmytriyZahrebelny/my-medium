@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { RootState } from '../../store/configureStore';
 import { IArticleId } from './interfaces';
-import * as actions from '../../store/Articles/ArticlesStore';
+import { addNewPostAsyncAction } from '../../store/Articles/ArticlesStore';
 
 const validate = (value: any) => {
 	const errors: any = {};
@@ -24,7 +24,7 @@ const validate = (value: any) => {
 	return errors;
 };
 
-export const useNewPostHooks = () => {
+export const useNewArticleHooks = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const { articleId }: IArticleId = useSelector((state: RootState) => state.articlesStore);
@@ -37,7 +37,7 @@ export const useNewPostHooks = () => {
 		},
 		validate,
 		onSubmit: values => {
-			dispatch(actions.addNewPostAsyncAction(values));
+			dispatch(addNewPostAsyncAction(values));
 		},
 	});
 

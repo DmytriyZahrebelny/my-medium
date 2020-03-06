@@ -4,9 +4,11 @@ import { useLocation, useParams } from 'react-router-dom';
 import { RootState } from '../../store/configureStore';
 import { IArticlesList, IObserverData } from './interfaces';
 import * as articlesAction from '../../store/Articles/ArticlesStore';
+import { getTagsAsyncAction } from '../../store/Tags/TagsStore';
 
 export const useArticlesListHooks = () => {
 	const { articles }: IArticlesList = useSelector((state: RootState) => state.articlesStore);
+	const tags: string[] = useSelector((state: RootState) => state.tagsStore);
 	const [numberPage, setNumberPage] = useState<number>(1);
 	const [loading, setLoading] = useState<boolean>(false);
 	const dispatch = useDispatch();
@@ -33,6 +35,10 @@ export const useArticlesListHooks = () => {
 		}
 	}, [numberPage, dispatch, loading, tag, pathname]);
 
+	useEffect(() => {
+		dispatch(getTagsAsyncAction());
+	}, [dispatch]);
+
 	const observer: IObserverData = useRef<HTMLDivElement>();
 	const lastArticlesLinkRef = useCallback((node: HTMLElement) => {
 		if (observer.current) {
@@ -55,5 +61,7 @@ export const useArticlesListHooks = () => {
 		articles,
 		lastArticlesLinkRef,
 		numberPage,
+		tag,
+		tags,
 	};
 };

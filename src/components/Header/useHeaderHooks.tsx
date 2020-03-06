@@ -1,6 +1,6 @@
 import { useReducer, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as actions from '../../store/Auth/AuthStore';
+import { logoutAction } from '../../store/Auth/AuthStore';
 import { RootState } from '../../store/configureStore';
 import { headerReducer, initialState, HADER_CONSTANTS } from './useHeaderReducer';
 
@@ -32,7 +32,7 @@ export const useHeaderHooks = () => {
 	};
 
 	const logoutClick = (): void => {
-		reduxDispatch(actions.logoutAction());
+		reduxDispatch(logoutAction());
 	};
 
 	return {

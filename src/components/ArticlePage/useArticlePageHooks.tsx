@@ -10,8 +10,11 @@ import {
 	tokenType,
 	IUserData,
 } from './interfaces';
-import * as actions from '../../store/Comments/CommentsStore';
-import * as articlesAction from '../../store/Articles/ArticlesStore';
+import {
+	createCommentsAsyncAction,
+	deleteCommentsAsyncAction,
+} from '../../store/Comments/CommentsStore';
+import { getArticlesAsyncAction } from '../../store/Articles/ArticlesStore';
 
 export const useArticlePageHooks = (slug: string = '') => {
 	const dispatch = useDispatch();
@@ -28,7 +31,7 @@ export const useArticlePageHooks = (slug: string = '') => {
 		},
 		onSubmit: ({ comment }) => {
 			if (comment.length) {
-				dispatch(actions.createCommentsAsyncAction(slug, comment));
+				dispatch(createCommentsAsyncAction(slug, comment));
 			}
 		},
 	});
@@ -38,13 +41,13 @@ export const useArticlePageHooks = (slug: string = '') => {
 
 		if (currentElement) {
 			const commentId: string = currentElement.id;
-			dispatch(actions.deleteCommentsAsyncAction(slug, commentId));
+			dispatch(deleteCommentsAsyncAction(slug, commentId));
 		}
 	};
 
 	useEffect(() => {
 		if (!articles.length) {
-			dispatch(articlesAction.getArticlesAsyncAction(Number(number) - 1));
+			dispatch(getArticlesAsyncAction(Number(number) - 1));
 		}
 	}, [number, articles, dispatch]);
 

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
-import * as actions from '../../store/Auth/AuthStore';
+import { signUpAsyncAction, signInAsyncAction } from '../../store/Auth/AuthStore';
 import { RootState } from '../../store/configureStore';
 
 const signUpValidate = (value: any) => {
@@ -48,7 +48,7 @@ export const useAuthHooks = () => {
 		},
 		validate: signUpValidate,
 		onSubmit: values => {
-			dispatch(actions.signUpAsyncAction(values));
+			dispatch(signUpAsyncAction(values));
 		},
 	});
 
@@ -59,7 +59,7 @@ export const useAuthHooks = () => {
 		},
 		validate: signInValidate,
 		onSubmit: values => {
-			dispatch(actions.signInAsyncAction(values));
+			dispatch(signInAsyncAction(values));
 		},
 	});
 

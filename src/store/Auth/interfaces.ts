@@ -1,4 +1,4 @@
-export interface IAuth {
+export interface IAuthState {
 	user: {
 		id: number;
 		email: string;

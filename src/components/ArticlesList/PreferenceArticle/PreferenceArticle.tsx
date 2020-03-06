@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '../../components/Icon';
 import { IPreferenceArticleProps } from '../interfaces';
-import * as actions from '../../../store/Articles/ArticlesStore';
+import { checkPreferenceArticleAsyncAction } from '../../../store/Articles/ArticlesStore';
 import { RootState } from '../../../store/configureStore';
 import './preferenceArticle.sass';
 
@@ -15,7 +15,7 @@ const PreferenceArticle: React.FC<IPreferenceArticleProps> = ({
 	const { token } = useSelector((state: RootState) => state.authStore);
 	const onButtonCklick = () => {
 		if (token) {
-			dispatch(actions.checkPreferenceArticleAsyncAction(favorited, slug));
+			dispatch(checkPreferenceArticleAsyncAction(favorited, slug));
 		}
 	};
 

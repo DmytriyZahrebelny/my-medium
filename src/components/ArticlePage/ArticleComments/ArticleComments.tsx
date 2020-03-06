@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Icon from '../../components/Icon';
-import * as actions from '../../../store/Comments/CommentsStore';
+import { getCommentsAsyncAction } from '../../../store/Comments/CommentsStore';
 import { ICommentData, ICommentsProps } from '../interfaces';
 import { useArticlePageHooks } from '../useArticlePageHooks';
 import './articleComments.sass';
@@ -9,7 +9,7 @@ const ArticleComments: React.FC<ICommentsProps> = ({ slug }) => {
 	const { user, comments, onDeleteCommentClick, dispatch } = useArticlePageHooks(slug);
 
 	useEffect(() => {
-		dispatch(actions.getCommentsAsyncAction(slug));
+		dispatch(getCommentsAsyncAction(slug));
 	}, [slug, dispatch]);
 
 	if (comments.length === 0) {

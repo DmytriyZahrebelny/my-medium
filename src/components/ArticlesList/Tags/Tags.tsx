@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
-import * as actions from '../../../store/Tags/TagsStore';
-import { RootState } from '../../../store/configureStore';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useArticlesListHooks } from '../useArticlesListHooks';
 import './tags.sass';
 
 const Tags = () => {
 	const [activeLink, setActiveLink] = useState<string>('');
-	const tags: string[] = useSelector((state: RootState) => state.tagsStore);
-	const dispatch = useDispatch();
-	const { tag = '' } = useParams();
-
-	useEffect(() => {
-		dispatch(actions.getTagsAsyncAction());
-	}, [dispatch]);
+	const { tag, tags } = useArticlesListHooks();
 
 	if (!tags.length) {
 		return null;

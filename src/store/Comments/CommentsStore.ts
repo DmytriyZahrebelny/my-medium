@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { commentsApi } from '../../api/commentsApi';
 import { RootState } from '../configureStore';
-import { ICommentData, ICommentRequestData, ICommentsState } from './interfaces';
+import { ICommentData, ICommentsResponseData, ICommentsState } from './interfaces';
 
 export function typedAction<T extends string, P extends any>(
 	type: T,
@@ -23,10 +23,11 @@ const initialState: ICommentsState = {
 
 const getCommentsAction = (payload: ICommentsState) => typedAction(ActionType.COMMENTS, payload);
 
-const deleteCommentsAction = (payload: ICommentsState) =>
+const deleteCommentsAction = (payload: ICommentData[]) =>
 	typedAction(ActionType.DELETE_COMMENTS, payload);
 
-const createCommentsAction = (payload: any) => typedAction(ActionType.CREATE_COMMENTS, payload);
+const createCommentsAction = (payload: ICommentData[]) =>
+	typedAction(ActionType.CREATE_COMMENTS, payload);
 
 export const getCommentsAsyncAction = (slug: string) => async (
 	dispatch: Dispatch,
@@ -43,9 +44,13 @@ export const deleteCommentsAsyncAction = (slug: string, commentId: string) => as
 ) => {
 	const { token } = store().authStore;
 	const { comments } = store().commentsStore;
+
 	await commentsApi.deleteComments(slug, commentId, token);
-	const newComments: ICommentData[] = comments.filter(({ id }: any) => id !== Number(commentId));
-	dispatch(deleteCommentsAction({ comments: newComments }));
+
+	const newCommentsList: ICommentData[] = comments.filter(
+		({ id }: any) => id !== Number(commentId)
+	);
+	dispatch(deleteCommentsAction(newCommentsList));
 };
 
 export const createCommentsAsyncAction = (slug: string, comment: string) => async (
@@ -54,23 +59,23 @@ export const createCommentsAsyncAction = (slug: string, comment: string) => asyn
 ) => {
 	const { token } = store().authStore;
 	const { comments } = store().commentsStore;
-	const response: ICommentRequestData = await commentsApi.createComments(slug, comment, token);
-	const newComments: ICommentData[] = [response.comment, ...comments];
-	dispatch(createCommentsAction({ comments: newComments }));
+	const response: ICommentsResponseData = await commentsApi.createComments(slug, comment, token);
+	const newCommentsList: ICommentData[] = [response.comment, ...comments];
+	dispatch(createCommentsAction(newCommentsList));
 };
 
-type commentsAction = ReturnType<
+type typeAction = ReturnType<
 	typeof getCommentsAction | typeof deleteCommentsAction | typeof createCommentsAction
 >;
 
-export default (state = initialState, action: commentsAction) => {
+export default (state = initialState, action: typeAction) => {
 	switch (action.type) {
 		case ActionType.COMMENTS:
 			return action.payload;
 		case ActionType.DELETE_COMMENTS:
-			return action.payload;
+			return { comments: action.payload };
 		case ActionType.CREATE_COMMENTS:
-			return action.payload;
+			return { comments: action.payload };
 		default:
 			return state;
 	}

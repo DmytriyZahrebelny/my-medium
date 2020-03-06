@@ -1,7 +1,6 @@
 import { Dispatch } from 'redux';
 import { authApi } from '../../api/authApi';
-import { settingsApi } from '../../api/settingsApi';
-import { IAuth, ILoginResponse, ISignIn, ISignUp } from './interfaces';
+import { IAuthState, ILoginResponse, ISignIn, ISignUp } from './interfaces';
 import { RootState } from '../configureStore';
 
 export function typedAction<T extends string>(type: T): { type: T };
@@ -21,7 +20,7 @@ enum ActionType {
 	UPDATE = 'UPDATE',
 }
 
-const initialState: IAuth = {
+const initialState: IAuthState = {
 	user: null,
 	errorsMesages: null,
 	token: null,
@@ -51,21 +50,21 @@ export const loginAsyncAction = () => async (dispatch: Dispatch) => {
 };
 
 export const signInAsyncAction = (formData: ISignIn) => async (dispatch: Dispatch) => {
-	const data: ILoginResponse | string[] = await authApi.signIn(formData);
-	if (data instanceof Array) {
-		dispatch(authErrorAction(data));
+	const response: ILoginResponse | string[] = await authApi.signIn(formData);
+	if (response instanceof Array) {
+		dispatch(authErrorAction(response));
 	} else {
-		dispatch(signInAction(data));
+		dispatch(signInAction(response));
 	}
 };
 
 export const signUpAsyncAction = (formData: ISignUp) => async (dispatch: Dispatch) => {
-	const data: ILoginResponse | string[] = await authApi.signUp(formData);
+	const response: ILoginResponse | string[] = await authApi.signUp(formData);
 
-	if (data instanceof Array) {
-		dispatch(authErrorAction(data));
+	if (response instanceof Array) {
+		dispatch(authErrorAction(response));
 	} else {
-		dispatch(signInAction(data));
+		dispatch(signInAction(response));
 	}
 };
 
@@ -74,15 +73,15 @@ export const updateUserDataAsyncAction = (formData: any) => async (
 	store: () => RootState
 ) => {
 	const { token } = store().authStore;
-	const data: ILoginResponse | string[] = await settingsApi.updateUserData(formData, token);
-	if (data instanceof Array) {
-		dispatch(authErrorAction(data));
+	const response: ILoginResponse | string[] = await authApi.updateUserData(formData, token);
+	if (response instanceof Array) {
+		dispatch(authErrorAction(response));
 	} else {
-		dispatch(updateUserData(data));
+		dispatch(updateUserData(response));
 	}
 };
 
-type AuthAction = ReturnType<
+type typeAction = ReturnType<
 	| typeof signInAction
 	| typeof logoutAction
 	| typeof authErrorAction
@@ -90,7 +89,7 @@ type AuthAction = ReturnType<
 	| typeof loginAction
 >;
 
-export default (state = initialState, action: AuthAction): IAuth => {
+export default (state = initialState, action: typeAction): IAuthState => {
 	switch (action.type) {
 		case ActionType.SIGN_IN:
 			return {

@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/configureStore';
 import { IUserData } from './interfaces';
-import * as actions from '../../store/Auth/AuthStore';
+import { updateUserDataAsyncAction } from '../../store/Auth/AuthStore';
 
 const validate = (value: any) => {
 	const errors: any = {};
@@ -36,7 +36,7 @@ export const useSettingsHooks = () => {
 				return password === '' ? { ...rest } : { ...rest, password };
 			};
 
-			dispatch(actions.updateUserDataAsyncAction(getNewUserData(values)));
+			dispatch(updateUserDataAsyncAction(getNewUserData(values)));
 		},
 	});
 

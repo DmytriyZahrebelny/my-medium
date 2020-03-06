@@ -1,11 +1,11 @@
 import React from 'react';
 import TextField from '../components/FormControls/TextField';
 import TextareaField from '../components/FormControls/TextareaField';
-import { useNewPostHooks } from './useNewPostHooks';
-import './newPost.sass';
+import { useNewArticleHooks } from './useNewArticleHooks';
+import './newArticle.sass';
 
-const NewPost: React.FC = () => {
-	const { handleSubmit, getFieldProps, touched, errors } = useNewPostHooks();
+const NewArticle: React.FC = () => {
+	const { handleSubmit, getFieldProps, touched, errors } = useNewArticleHooks();
 
 	return (
 		<div className='new-post'>
@@ -40,4 +40,4 @@ const NewPost: React.FC = () => {
 	);
 };
 
-export default NewPost;
+export default NewArticle;

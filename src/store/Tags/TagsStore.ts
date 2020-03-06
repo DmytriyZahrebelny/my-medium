@@ -24,9 +24,9 @@ export const getTagsAsyncAction = () => async (dispatch: Dispatch) => {
 	dispatch(getTagsAction(response.tags));
 };
 
-type tagsAction = ReturnType<typeof getTagsAction>;
+type typeAction = ReturnType<typeof getTagsAction>;
 
-export default (state: string[] = [], action: tagsAction) => {
+export default (state: string[] = [], action: typeAction) => {
 	switch (action.type) {
 		case ActionType.TAGS:
 			return action.payload;

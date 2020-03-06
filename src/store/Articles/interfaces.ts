@@ -1,8 +1,8 @@
-export interface IAllArticlesData {
+export interface IArticlesResponse {
 	articles: IArticleData[];
 }
 
-export interface IState {
+export interface IArticlesState {
 	articles: IArticleData[];
 	articleId: null | string;
 }

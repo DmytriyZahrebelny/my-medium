@@ -1,9 +1,8 @@
 import { Dispatch } from 'redux';
 import { articlesApi } from '../../api/articlesApi';
-import { newPostApi } from '../../api/newPostApi';
 import {
-	IAllArticlesData,
-	IState,
+	IArticlesResponse,
+	IArticlesState,
 	INewArticleData,
 	ICreatePostData,
 	IArticleData,
@@ -26,7 +25,7 @@ enum ActionType {
 	CHECK_PREFERENCE = 'CHECK_PREFERENCE',
 }
 
-const initialState: IState = {
+const initialState: IArticlesState = {
 	articles: [],
 	articleId: null,
 };
@@ -43,7 +42,7 @@ const getArticleByTagAction = (payload: IArticleData[]) =>
 const infinityLoadArticlesByTagAction = (payload: IArticleData[]) =>
 	typedAction(ActionType.INFINITY_ATTICALS, payload);
 
-const createdArticle = (payload: INewArticleData) =>
+const createdArticleAction = (payload: INewArticleData) =>
 	typedAction(ActionType.CREATED_ARTICLE, payload);
 
 const checkPreferenceArticleAction = (payload: IArticleData[]) =>
@@ -54,7 +53,7 @@ export const getArticlesAsyncAction = (page: number = 0) => async (
 	store: () => RootState
 ) => {
 	const { token } = store().authStore;
-	const response: IAllArticlesData = await articlesApi.allArticles(page, token);
+	const response: IArticlesResponse = await articlesApi.getArticles(page, token);
 	if (page) {
 		dispatch(infinityLoadArticlesAction(response.articles));
 	} else {
@@ -65,7 +64,7 @@ export const getArticlesAsyncAction = (page: number = 0) => async (
 export const getArticleByTagAsyncAction = (tag: string, page: number = 0) => async (
 	dispatch: Dispatch
 ) => {
-	const response: IAllArticlesData = await articlesApi.getArticlesByTag(page, tag);
+	const response: IArticlesResponse = await articlesApi.getArticlesByTag(page, tag);
 	if (page) {
 		dispatch(infinityLoadArticlesByTagAction(response.articles));
 	} else {
@@ -78,8 +77,8 @@ export const addNewPostAsyncAction = (data: ICreatePostData) => async (
 	store: () => RootState
 ) => {
 	const { token } = store().authStore;
-	const response: INewArticleData = await newPostApi.createPost(data, token);
-	dispatch(createdArticle(response));
+	const response: INewArticleData = await articlesApi.createPost(data, token);
+	dispatch(createdArticleAction(response));
 };
 
 export const checkPreferenceArticleAsyncAction = (favorited: boolean, slug: string) => async (
@@ -87,30 +86,30 @@ export const checkPreferenceArticleAsyncAction = (favorited: boolean, slug: stri
 	store: () => RootState
 ) => {
 	const { token } = store().authStore;
-	const { articles }: IAllArticlesData = store().articlesStore;
+	const { articles }: IArticlesResponse = store().articlesStore;
 	const articleIndex: number = articles.findIndex((article: IArticleData) => article.slug === slug);
 
 	if (favorited) {
-		const { article } = await articlesApi.unfavoriteArticle(slug, token);
+		const { article } = await articlesApi.checkUnfavoriteArticle(slug, token);
 		articles.splice(articleIndex, 1, article);
 		dispatch(checkPreferenceArticleAction(articles));
 	} else {
-		const { article } = await articlesApi.favoriteArticle(slug, token);
+		const { article } = await articlesApi.checkFavoriteArticle(slug, token);
 		articles.splice(articleIndex, 1, article);
 		dispatch(checkPreferenceArticleAction(articles));
 	}
 };
 
-type articlesAction = ReturnType<
+type typeAction = ReturnType<
 	| typeof getArticlesAction
-	| typeof createdArticle
+	| typeof createdArticleAction
 	| typeof checkPreferenceArticleAction
 	| typeof getArticleByTagAction
 	| typeof infinityLoadArticlesAction
 	| typeof infinityLoadArticlesByTagAction
 >;
 
-export default (state = initialState, action: articlesAction) => {
+export default (state = initialState, action: typeAction) => {
 	switch (action.type) {
 		case ActionType.GET_ARTICLES:
 			return {

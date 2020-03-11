@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { StoreProvider } from './store/globalStore';
+import { Provider, createStore } from './store/createStore';
 import App from './App';
 import './index.sass';
 
+const store = createStore();
+
 ReactDOM.render(
 	<BrowserRouter>
-		<StoreProvider>
+		<Provider value={store}>
 			<App />
-		</StoreProvider>
+		</Provider>
 	</BrowserRouter>,
 	document.getElementById('root')
 );

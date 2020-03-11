@@ -1,10 +1,11 @@
 import { useReducer, useEffect } from 'react';
-import { useAuthStore } from '../../store/AuthStore/AuthStore';
+import { useStore } from '../../store/createStore';
 import { headerReducer, initialState, HADER_CONSTANTS } from './useHeaderReducer';
 
 export const useHeaderHooks = () => {
 	const [{ showUserMenu, isSearch }, dispatch] = useReducer(headerReducer, initialState);
-	const { user, logoutAction } = useAuthStore();
+	const { auth } = useStore();
+	const { user, logoutAction } = auth;
 
 	useEffect(() => {
 		const removeUserMenu = (evt: any): void => {

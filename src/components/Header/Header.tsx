@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react';
 import UserMenu from './UserMenu/UserMenu';
 import Icon from '../components/Icon';
 import { useHeaderHooks } from './useHeaderHooks';
@@ -52,4 +53,4 @@ const Header: React.FC = () => {
 	);
 };
 
-export default Header;
+export default observer(Header);

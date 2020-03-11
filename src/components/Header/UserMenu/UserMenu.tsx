@@ -19,8 +19,8 @@ export interface IUserMenu {
 const userLogo: string = 'https://cdn-images-1.medium.com/fit/c/50/50/0*7TqUrB-WnHVdrBF5.';
 
 const UserMenu: React.FC<IUserMenu> = ({ user }) => {
-	const { transformEmail } = useHeaderHooks();
-	const logoutAction = () => console.log(true);
+	const { transformEmail, logoutAction } = useHeaderHooks();
+
 	return (
 		<div className='user-menu'>
 			<div className='user-menu__user'>

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useStore } from '../../store/createStore';
 
@@ -35,7 +36,11 @@ const signInValidate = (value: any) => {
 
 export const useAuthHooks = () => {
 	const { auth } = useStore();
-	const { signInAction, signUpAction, errorsMesages } = auth;
+	const { signInAction, signUpAction, errorsMesages, clearErrorsAction } = auth;
+
+	useEffect(() => {
+		clearErrorsAction();
+	}, [clearErrorsAction]);
 
 	const signUpForm = useFormik({
 		initialValues: {

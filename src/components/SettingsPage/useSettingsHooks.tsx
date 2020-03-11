@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { IUserData } from './interfaces';
-import { useAuthStore } from '../../store/AuthStore/AuthStore';
+import { useStore } from '../../store/createStore';
 
 const validate = (value: any) => {
 	const errors: any = {};
@@ -17,7 +17,8 @@ const validate = (value: any) => {
 };
 
 export const useSettingsHooks = () => {
-	const { user, errorsMesages, updateDataAction } = useAuthStore();
+	const { auth } = useStore();
+	const { user, errorsMesages, updateDataAction } = auth;
 
 	const { handleSubmit, getFieldProps, touched, errors } = useFormik({
 		initialValues: {

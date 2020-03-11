@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import TextField from '../../components/FormControls/TextField';
 import ErrorsMessages from '../../components/ErrorsMessages/ErrorsMessages';
 import { useAuthHooks } from '../useAuthHooks';
@@ -42,4 +43,4 @@ const SignUp: React.FC = () => {
 	);
 };
 
-export default SignUp;
+export default observer(SignUp);

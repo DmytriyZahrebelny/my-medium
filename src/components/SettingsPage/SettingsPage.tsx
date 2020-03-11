@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import TextField from '../components/FormControls/TextField';
 import TextareaField from '../components/FormControls/TextareaField';
 import ErrorsMessages from '../components/ErrorsMessages/ErrorsMessages';
@@ -60,4 +61,4 @@ const SettingsPage: React.FC = () => {
 	);
 };
 
-export default SettingsPage;
+export default observer(SettingsPage);

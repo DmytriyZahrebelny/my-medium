@@ -28,6 +28,9 @@ export const AuthStore = types
 				store.errorsMesages = cast(response);
 			} else {
 				store.user = response.user;
+				store.token = response.user.token;
+				store.errorsMesages = null;
+				store.redirectTo = '/';
 			}
 		}),
 		signUpAction: flow(function* signUp(data: ISignUp) {
@@ -36,6 +39,9 @@ export const AuthStore = types
 				store.errorsMesages = cast(response);
 			} else {
 				store.user = response.user;
+				store.token = response.user.token;
+				store.errorsMesages = null;
+				store.redirectTo = '/';
 			}
 		}),
 		loginAction: flow(function* login() {
@@ -45,9 +51,24 @@ export const AuthStore = types
 					const res = yield authApi.getViewerData(token);
 
 					store.user = res.user;
+					store.token = res.user.token;
 				}
 			} catch (error) {
 				window.localStorage.removeItem('__token');
+			}
+		}),
+		updateDataAction: flow(function* updateData(formData: any) {
+			const response: ILoginResponse | string[] = yield settingsApi.updateUserData(
+				formData,
+				store.token
+			);
+			if (response instanceof Array) {
+				store.errorsMesages = cast(response);
+			} else {
+				store.user = response.user;
+				store.token = response.user.token;
+				store.errorsMesages = null;
+				store.redirectTo = '/posts';
 			}
 		}),
 		logoutAction() {
@@ -56,5 +77,8 @@ export const AuthStore = types
 			store.token = null;
 			store.errorsMesages = null;
 			store.redirectTo = null;
+		},
+		clearErrorsAction() {
+			store.errorsMesages = null;
 		},
 	}));

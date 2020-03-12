@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react';
 import { Link, useParams } from 'react-router-dom';
-import { useTagsStore } from '../../../store/TagsStore/TagsStore';
+import { useStore } from '../../../store/createStore';
 import './tags.sass';
 
 const Tags = () => {
 	const [activeLink, setActiveLink] = useState<string>('');
-	const { tags, getTagsAction } = useTagsStore();
+	const { tagsStore } = useStore();
+	const { tags, getTagsAction } = tagsStore;
 	const { tag = '' } = useParams();
 
 	useEffect(() => {
@@ -33,4 +35,4 @@ const Tags = () => {
 	);
 };
 
-export default Tags;
+export default observer(Tags);

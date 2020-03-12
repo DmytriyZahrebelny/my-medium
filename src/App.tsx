@@ -6,7 +6,7 @@ import SignIn from './components/Auth/SignIn/SignIn';
 import SignUp from './components/Auth/SignUp/SignUp';
 import ArticlesList from './components/ArticlesList/ArticlesList';
 import ArticlePage from './components/ArticlePage/ArticlePage';
-// import NewPost from './components/NewPost/NewPost';
+import NewPost from './components/NewPost/NewPost';
 import SettingsPage from './components/SettingsPage/SettingsPage';
 import { useStore } from './store/createStore';
 
@@ -30,7 +30,7 @@ const App: React.FC = () => {
 			<Header />
 			{!token ? (
 				<Switch>
-					{/* <Route exact path={['/', '/posts']} component={ArticlesList} /> */}
+					<Route exact path={['/', '/posts']} component={ArticlesList} />
 					<Route exact path='/bytag/:tag' component={ArticlesList} />
 					<Route path='/signin' component={SignIn} />
 					<Route path='/signup' component={SignUp} />
@@ -41,7 +41,7 @@ const App: React.FC = () => {
 					<Route exact path={['/', '/posts']} component={ArticlesList} />
 					<Route exact path='/bytag/:tag' component={ArticlesList} />
 					<Route path='/posts/:number/:id' component={ArticlePage} />
-					{/* <Route path='/new-post' component={NewPost} /> */}
+					<Route path='/new-post' component={NewPost} />
 					<Route psth='/settings' component={SettingsPage} />
 				</Switch>
 			)}

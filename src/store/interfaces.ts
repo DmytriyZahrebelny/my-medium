@@ -1,5 +1,5 @@
 import { IAuthState } from './Auth/interfaces';
-import { IArticlesState } from './ArticlesStore/interfaces';
+import { IArticlesState } from './Articles/interfaces';
 import { ICommentsState } from './CommentsStore/interfaces';
 import { ITagsStore, TagsStore } from './TagsStore/TagsStore';
 import { AuthState } from './AuthStore/AuthStore';

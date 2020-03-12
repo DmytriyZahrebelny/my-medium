@@ -1,11 +1,7 @@
 import { types, flow, cast, getParent } from 'mobx-state-tree';
 import { articlesApi } from '../../api/articlesApi';
 import { newPostApi } from '../../api/newPostApi';
-import {
-	IResponseArticlesData,
-	IArticleData,
-	INewArticleFormData,
-} from '../ArticlesStore/interfaces';
+import { IResponseArticlesData, IArticleData, INewArticleFormData } from './interfaces';
 
 const ArticleModel = types.model({
 	title: types.string,

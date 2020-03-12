@@ -7,7 +7,7 @@ import {
 	IArticleData,
 	INewArticleFormData,
 	IArticlesState,
-} from './interfaces';
+} from '../Articles/interfaces';
 
 export const articlesInitialState: IArticlesState = {
 	articles: [],

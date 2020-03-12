@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import TextField from '../components/FormControls/TextField';
 import TextareaField from '../components/FormControls/TextareaField';
 import { useNewPostHooks } from './useNewPostHooks';
@@ -40,4 +41,4 @@ const NewPost: React.FC = () => {
 	);
 };
 
-export default NewPost;
+export default observer(NewPost);

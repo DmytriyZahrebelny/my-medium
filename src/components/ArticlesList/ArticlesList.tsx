@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import ArticlesLink from './ArticlesLink/ArticlesLink';
-// import Tags from './Tags/Tags';
+import Tags from './Tags/Tags';
 import { useArticlesListHooks } from './useArticlesListHooks';
 import './articlesList.sass';
 
@@ -19,7 +19,7 @@ const ArticlesList = () => {
 				lastArticlesLinkRef={lastArticlesLinkRef}
 				numberPage={numberPage}
 			/>
-			{/* <Tags /> */}
+			<Tags />
 		</div>
 	);
 };

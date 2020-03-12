@@ -27,8 +27,8 @@ export const ArticlesStore = types
 	})
 	.actions(self => ({
 		getArticlesAction: flow(function* getArticles(page: number = 0) {
-			const { auth } = getParent(self);
-			const response: IResponseArticlesData = yield articlesApi.allArticles(page, auth.token);
+			const { authStore } = getParent(self);
+			const response: IResponseArticlesData = yield articlesApi.allArticles(page, authStore.token);
 
 			if (page) {
 				self.articles = cast([...self.articles, ...response.articles]);
@@ -45,8 +45,8 @@ export const ArticlesStore = types
 			}
 		}),
 		addNewPostAction: flow(function* addNewPost(data: INewArticleFormData) {
-			const { auth } = getParent(self);
-			const response = yield newPostApi.createPost(data, auth.token);
+			const { authStore } = getParent(self);
+			const response = yield newPostApi.createPost(data, authStore.token);
 			self.articles = cast([response.article, ...self.articles]);
 			self.articleId = response.article.slug;
 		}),
@@ -54,16 +54,16 @@ export const ArticlesStore = types
 			favorited: boolean,
 			slug: string
 		) {
-			const { auth } = getParent(self);
+			const { authStore } = getParent(self);
 			const articleIndex: number = self.articles.findIndex(
 				(article: IArticleData) => article.slug === slug
 			);
 
 			if (favorited) {
-				const { article } = yield articlesApi.unfavoriteArticle(slug, auth.token);
+				const { article } = yield articlesApi.unfavoriteArticle(slug, authStore.token);
 				self.articles.splice(articleIndex, 1, article);
 			} else {
-				const { article } = yield articlesApi.favoriteArticle(slug, auth.token);
+				const { article } = yield articlesApi.favoriteArticle(slug, authStore.token);
 				self.articles.splice(articleIndex, 1, article);
 			}
 		}),

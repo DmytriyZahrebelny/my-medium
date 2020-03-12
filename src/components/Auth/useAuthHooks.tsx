@@ -35,8 +35,8 @@ const signInValidate = (value: any) => {
 };
 
 export const useAuthHooks = () => {
-	const { auth } = useStore();
-	const { signInAction, signUpAction, errorsMesages, clearErrorsAction } = auth;
+	const { authStore } = useStore();
+	const { signInAction, signUpAction, errorsMesages, clearErrorsAction } = authStore;
 
 	useEffect(() => {
 		clearErrorsAction();

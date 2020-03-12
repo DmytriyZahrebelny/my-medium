@@ -3,7 +3,7 @@ export interface ICommentsState {
 }
 
 export interface ICommentData {
-	id: string;
+	id: number;
 	createdAt: string;
 	body: string;
 	author: {

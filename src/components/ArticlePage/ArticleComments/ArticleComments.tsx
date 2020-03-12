@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
+import { observer } from 'mobx-react';
 import Icon from '../../components/Icon';
 import { ICommentData, ICommentsProps } from '../interfaces';
 import { useArticlePageHooks } from '../useArticlePageHooks';
-import { useCommentsStore } from '../../../store/CommentsStore/CommentsStore';
 import './articleComments.sass';
 
 const ArticleComments: React.FC<ICommentsProps> = ({ slug }) => {
-	const { user, comments, onDeleteCommentClick } = useArticlePageHooks(slug);
-	const { getCommentsAction } = useCommentsStore();
+	const { user, comments, onDeleteCommentClick, getCommentsAction } = useArticlePageHooks(slug);
 
 	useEffect(() => {
 		getCommentsAction(slug);
@@ -42,4 +41,4 @@ const ArticleComments: React.FC<ICommentsProps> = ({ slug }) => {
 	);
 };
 
-export default ArticleComments;
+export default observer(ArticleComments);

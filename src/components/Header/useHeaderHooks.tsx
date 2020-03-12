@@ -4,8 +4,8 @@ import { headerReducer, initialState, HADER_CONSTANTS } from './useHeaderReducer
 
 export const useHeaderHooks = () => {
 	const [{ showUserMenu, isSearch }, dispatch] = useReducer(headerReducer, initialState);
-	const { auth } = useStore();
-	const { user, logoutAction } = auth;
+	const { authStore } = useStore();
+	const { user, logoutAction } = authStore;
 
 	useEffect(() => {
 		const removeUserMenu = (evt: any): void => {

@@ -17,8 +17,8 @@ const validate = (value: any) => {
 };
 
 export const useSettingsHooks = () => {
-	const { auth } = useStore();
-	const { user, errorsMesages, updateDataAction } = auth;
+	const { authStore } = useStore();
+	const { user, errorsMesages, updateDataAction } = authStore;
 
 	const { handleSubmit, getFieldProps, touched, errors } = useFormik({
 		initialValues: {

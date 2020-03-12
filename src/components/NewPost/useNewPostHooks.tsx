@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useHistory } from 'react-router-dom';
-import { useArticlesStore } from '../../store/ArticlesStore/ArticlesStore';
+import { useStore } from '../../store/createStore';
 
 const validate = (value: any) => {
 	const errors: any = {};
@@ -23,7 +23,8 @@ const validate = (value: any) => {
 
 export const useNewPostHooks = () => {
 	const history = useHistory();
-	const { articleId, addNewPostAction } = useArticlesStore();
+	const { articlesStore } = useStore();
+	const { articleId, addNewPostAction } = articlesStore;
 
 	const { handleSubmit, getFieldProps, touched, errors } = useFormik({
 		initialValues: {

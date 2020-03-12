@@ -10,8 +10,8 @@ const PreferenceArticle: React.FC<IPreferenceArticleProps> = ({
 	favorited,
 	slug,
 }) => {
-	const { auth, articlesStore } = useStore();
-	const { token } = auth;
+	const { authStore, articlesStore } = useStore();
+	const { token } = authStore;
 	const { checkPreferenceArticleAction } = articlesStore;
 	const onButtonCklick = () => {
 		if (token) {

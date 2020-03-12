@@ -12,7 +12,7 @@ const Tags = () => {
 
 	useEffect(() => {
 		getTagsAction();
-	}, []);
+	}, [getTagsAction]);
 
 	if (!tags.length) {
 		return null;

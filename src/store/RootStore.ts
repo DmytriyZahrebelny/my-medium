@@ -1,8 +1,8 @@
 import { types, Instance } from 'mobx-state-tree';
-import { AuthStore } from './Auth/AuthStore';
-import { ArticlesStore } from './Articles/ArticlesStore';
-import { CommentsStore } from './Comments/CommentsStore';
-import { TagsStore } from './Tags/TagsStore';
+import { AuthStore } from './AuthStore/AuthStore';
+import { ArticlesStore } from './ArticlesStore/ArticlesStore';
+import { CommentsStore } from './CommentsStore/CommentsStore';
+import { TagsStore } from './TagsStore/TagsStore';
 
 export type RootStoreModel = Instance<typeof RootStore>;
 

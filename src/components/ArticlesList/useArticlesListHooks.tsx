@@ -19,7 +19,7 @@ export const useArticlesListHooks = () => {
 			getArticlesByTagAction(tag);
 			setNumberPage(1);
 		}
-	}, [pathname, tag]);
+	}, [pathname, tag, getArticlesAction, getArticlesByTagAction]);
 
 	useEffect(() => {
 		if ((pathname === '/' || pathname === '/posts') && loading) {
@@ -29,7 +29,7 @@ export const useArticlesListHooks = () => {
 			getArticlesByTagAction(tag, numberPage);
 			setLoading(false);
 		}
-	}, [numberPage, loading, tag, pathname]);
+	}, [numberPage, loading, tag, pathname, getArticlesAction, getArticlesByTagAction]);
 
 	const observer: IObserverData = useRef<HTMLDivElement>();
 	const lastArticlesLinkRef = useCallback((node: HTMLElement) => {

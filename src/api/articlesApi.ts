@@ -1,10 +1,17 @@
+interface ICreatePost {
+	title: string;
+	description: string;
+	body: string;
+	tagList?: string;
+}
+
 const limit = (count: number, page: number): string =>
 	`limit=${count}&offset=${page ? page * count : 0}`;
 
 const encode = encodeURIComponent;
 
 export const articlesApi: any = {
-	async allArticles(page: number, token: string = ''): Promise<any> {
+	async getArticles(page: number, token: string = ''): Promise<any> {
 		const response = await fetch(`/api/articles?${limit(10, page)}`, {
 			method: 'GET',
 			headers: {
@@ -23,7 +30,7 @@ export const articlesApi: any = {
 		const data = await response.json();
 		return data;
 	},
-	async favoriteArticle(slug: string, token: string) {
+	async checkFavoriteArticle(slug: string, token: string) {
 		const response = await fetch(`/api/articles/${slug}/favorite`, {
 			method: 'POST',
 			headers: {
@@ -34,7 +41,7 @@ export const articlesApi: any = {
 		const data = await response.json();
 		return data;
 	},
-	async unfavoriteArticle(slug: string, token: string) {
+	async checkUnfavoriteArticle(slug: string, token: string) {
 		const response = await fetch(`/api/articles/${slug}/favorite`, {
 			method: 'DELETE',
 			headers: {
@@ -44,5 +51,31 @@ export const articlesApi: any = {
 
 		const data = await response.json();
 		return data;
+	},
+	async createPost(
+		{ title, description, body, tagList = '' }: ICreatePost,
+		token: string | null
+	): Promise<any> {
+		try {
+			const response = await fetch('/api/articles', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Token ${token}`,
+				},
+				body: JSON.stringify({ article: { title, description, body, tagList } }),
+			});
+
+			if (response.status >= 200 && response.status > 300) {
+				const error = await response.json();
+				await Promise.reject(error);
+			}
+
+			const data = await response.json();
+
+			return data;
+		} catch ({ errors }) {
+			return errors;
+		}
 	},
 };

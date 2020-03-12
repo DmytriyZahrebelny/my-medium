@@ -1,96 +1,83 @@
-import { useStore, IRootState } from '../globalStore';
+import { types, flow, cast } from 'mobx-state-tree';
 import { authApi } from '../../api/authApi';
-import { settingsApi } from '../../api/settingsApi';
-import { ILoginResponse, ISignIn, ISignUp, IAuthState } from '../Auth/interfaces';
+import { ILoginResponse, ISignIn, ISignUp } from './interfaces';
 
-export const authInitialState: IAuthState = {
-	user: null,
-	errorsMesages: null,
-	token: null,
-	redirectTo: null,
-};
+const authDataModel = types.model({
+	id: types.number,
+	email: types.string,
+	createdAt: types.string,
+	updatedAt: types.string,
+	username: types.string,
+	bio: types.maybeNull(types.string),
+	image: types.maybeNull(types.string),
+	token: types.string,
+});
 
-export const useAuthStore = () => {
-	const {
-		state: { user, token, redirectTo, errorsMesages },
-		dispatch,
-	}: IRootState = useStore();
-	return {
-		user,
-		token,
-		redirectTo,
-		errorsMesages,
-		async signInAction(values: ISignIn) {
-			const response: ILoginResponse | string[] = await authApi.signIn(values);
+export const AuthStore = types
+	.model('AuthModal', {
+		user: types.maybeNull(authDataModel),
+		errorsMesages: types.maybeNull(types.array(types.string)),
+		token: types.maybeNull(types.string),
+		redirectTo: types.maybeNull(types.string),
+	})
+	.actions(self => ({
+		signInAction: flow(function* signIn(data: ISignIn) {
+			const response: ILoginResponse | string[] = yield authApi.signIn(data);
 			if (response instanceof Array) {
-				dispatch({ type: 'ERRORS', payload: response });
+				self.errorsMesages = cast(response);
 			} else {
-				dispatch({ type: 'SIGN_IN', payload: response });
+				self.user = response.user;
+				self.token = response.user.token;
+				self.errorsMesages = null;
+				self.redirectTo = '/';
 			}
-		},
-		async signUpAction(values: ISignUp) {
-			const response: ILoginResponse | string[] = await authApi.signUp(values);
+		}),
+		signUpAction: flow(function* signUp(data: ISignUp) {
+			const response: ILoginResponse | string[] = yield authApi.signUp(data);
 			if (response instanceof Array) {
-				dispatch({ type: 'ERRORS', payload: response });
+				self.errorsMesages = cast(response);
 			} else {
-				dispatch({ type: 'SIGN_IN', payload: response });
+				self.user = response.user;
+				self.token = response.user.token;
+				self.errorsMesages = null;
+				self.redirectTo = '/';
 			}
-		},
-		async loginAction() {
-			const tokenData: string | null = window.localStorage.getItem('__token');
-			if (tokenData) {
-				const response = await authApi.getViewerData(tokenData);
-				dispatch({ type: 'LOGIN', payload: response });
+		}),
+		loginAction: flow(function* login() {
+			try {
+				const token = window.localStorage.getItem('__token');
+				if (token) {
+					const res = yield authApi.getViewerData(token);
+
+					self.user = res.user;
+					self.token = res.user.token;
+				}
+			} catch (error) {
+				window.localStorage.removeItem('__token');
 			}
-		},
-		async updateDataAction(formData: any) {
-			const response: ILoginResponse | string[] = await settingsApi.updateUserData(formData, token);
+		}),
+		updateDataAction: flow(function* updateData(formData: any) {
+			const response: ILoginResponse | string[] = yield authApi.updateUserData(
+				formData,
+				self.token
+			);
 			if (response instanceof Array) {
-				dispatch({ type: 'UPDATE', payload: response });
+				self.errorsMesages = cast(response);
 			} else {
-				dispatch({ type: 'UPDATE', payload: response });
+				self.user = response.user;
+				self.token = response.user.token;
+				self.errorsMesages = null;
+				self.redirectTo = '/posts';
 			}
-		},
-		logoutAction: () => {
+		}),
+		logoutAction() {
 			window.localStorage.removeItem('__token');
-			dispatch({ type: 'LOGOUT' });
+			self.user = null;
+			self.token = null;
+			self.errorsMesages = null;
+			self.redirectTo = null;
 		},
-	};
-};
-
-type AuthAction =
-	| { type: 'SIGN_IN' | 'LOGIN' | 'UPDATE'; payload: ILoginResponse }
-	| { type: 'LOGOUT'; payload: ILoginResponse }
-	| { type: 'ERRORS'; payload: string[] };
-
-export const AuthState = (state: IAuthState = authInitialState, action: AuthAction) => {
-	switch (action.type) {
-		case 'SIGN_IN':
-			return {
-				...action.payload,
-				token: action.payload.user.token,
-				errorsMesages: null,
-				redirectTo: '/',
-			};
-		case 'LOGIN':
-			return {
-				...action.payload,
-				token: action.payload.user.token,
-				errorsMesages: null,
-				redirectTo: null,
-			};
-		case 'LOGOUT':
-			return { user: null, token: null, errorsMesages: null, redirectTo: null };
-		case 'UPDATE':
-			return {
-				...action.payload,
-				token: action.payload.user.token,
-				errorsMesages: null,
-				redirectTo: '/posts',
-			};
-		case 'ERRORS':
-			return { ...state, errorsMesages: action.payload };
-		default:
-			return state;
-	}
-};
+		clearErrorsAction() {
+			self.errorsMesages = null;
+		},
+	}));

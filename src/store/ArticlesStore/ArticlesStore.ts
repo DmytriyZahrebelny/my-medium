@@ -1,6 +1,5 @@
 import { types, flow, cast, getParent } from 'mobx-state-tree';
 import { articlesApi } from '../../api/articlesApi';
-import { newPostApi } from '../../api/newPostApi';
 import { IResponseArticlesData, IArticleData, INewArticleFormData } from './interfaces';
 
 const ArticleModel = types.model({
@@ -24,7 +23,7 @@ export const ArticlesStore = types
 	.actions(self => ({
 		getArticlesAction: flow(function* getArticles(page: number = 0) {
 			const { authStore } = getParent(self);
-			const response: IResponseArticlesData = yield articlesApi.allArticles(page, authStore.token);
+			const response: IResponseArticlesData = yield articlesApi.getArticles(page, authStore.token);
 
 			if (page) {
 				self.articles = cast([...self.articles, ...response.articles]);
@@ -42,7 +41,7 @@ export const ArticlesStore = types
 		}),
 		addNewPostAction: flow(function* addNewPost(data: INewArticleFormData) {
 			const { authStore } = getParent(self);
-			const response = yield newPostApi.createPost(data, authStore.token);
+			const response = yield articlesApi.createPost(data, authStore.token);
 			self.articles = cast([response.article, ...self.articles]);
 			self.articleId = response.article.slug;
 		}),
@@ -56,10 +55,10 @@ export const ArticlesStore = types
 			);
 
 			if (favorited) {
-				const { article } = yield articlesApi.unfavoriteArticle(slug, authStore.token);
+				const { article } = yield articlesApi.checkUnfavoriteArticle(slug, authStore.token);
 				self.articles.splice(articleIndex, 1, article);
 			} else {
-				const { article } = yield articlesApi.favoriteArticle(slug, authStore.token);
+				const { article } = yield articlesApi.checkFavoriteArticle(slug, authStore.token);
 				self.articles.splice(articleIndex, 1, article);
 			}
 		}),

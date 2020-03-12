@@ -1,32 +1,17 @@
-import { useStore, IRootState } from '../globalStore';
+import { types, flow, cast } from 'mobx-state-tree';
 import { tagsApi } from '../../api/tagsApi';
 
 export interface ITagsStore {
 	tags: string[];
 }
 
-export const useTagsStore = () => {
-	const {
-		state: { tags },
-		dispatch,
-	}: IRootState = useStore();
-
-	return {
-		tags,
-		async getTagsAction() {
-			const response: ITagsStore = await tagsApi.getTags();
-			dispatch({ type: 'TAGS', payload: response });
-		},
-	};
-};
-
-type TagsAction = { type: 'TAGS'; payload: string[] };
-
-export const TagsStore = (state: string[] = [], action: TagsAction) => {
-	switch (action.type) {
-		case 'TAGS':
-			return action.payload;
-		default:
-			return state;
-	}
-};
+export const TagsStore = types
+	.model({
+		tags: types.array(types.string),
+	})
+	.actions(self => ({
+		getTagsAction: flow(function* getTags() {
+			const response: ITagsStore = yield tagsApi.getTags();
+			self.tags = cast(response.tags);
+		}),
+	}));

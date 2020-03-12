@@ -10,7 +10,7 @@ const ArticleComments: React.FC<ICommentsProps> = ({ slug }) => {
 
 	useEffect(() => {
 		getCommentsAction(slug);
-	}, [slug]);
+	}, [slug, getCommentsAction]);
 
 	if (comments.length === 0) {
 		return null;

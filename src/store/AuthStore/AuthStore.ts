@@ -1,7 +1,7 @@
 import { useStore, IRootState } from '../globalStore';
 import { authApi } from '../../api/authApi';
 import { settingsApi } from '../../api/settingsApi';
-import { ILoginResponse, ISignIn, ISignUp, IAuthState } from './interfaces';
+import { ILoginResponse, ISignIn, ISignUp, IAuthState } from '../Auth/interfaces';
 
 export const authInitialState: IAuthState = {
 	user: null,

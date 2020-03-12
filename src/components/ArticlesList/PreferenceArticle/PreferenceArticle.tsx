@@ -1,8 +1,8 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import Icon from '../../components/Icon';
 import { IPreferenceArticleProps } from '../interfaces';
-import { useAuthStore } from '../../../store/AuthStore/AuthStore';
-import { useArticlesStore } from '../../../store/ArticlesStore/ArticlesStore';
+import { useStore } from '../../../store/createStore';
 import './preferenceArticle.sass';
 
 const PreferenceArticle: React.FC<IPreferenceArticleProps> = ({
@@ -10,8 +10,9 @@ const PreferenceArticle: React.FC<IPreferenceArticleProps> = ({
 	favorited,
 	slug,
 }) => {
-	const { token } = useAuthStore();
-	const { checkPreferenceArticleAction } = useArticlesStore();
+	const { auth, articlesStore } = useStore();
+	const { token } = auth;
+	const { checkPreferenceArticleAction } = articlesStore;
 	const onButtonCklick = () => {
 		if (token) {
 			checkPreferenceArticleAction(favorited, slug);
@@ -33,4 +34,4 @@ const PreferenceArticle: React.FC<IPreferenceArticleProps> = ({
 	);
 };
 
-export default PreferenceArticle;
+export default observer(PreferenceArticle);

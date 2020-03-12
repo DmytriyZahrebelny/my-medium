@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { IObserverData } from './interfaces';
-import { useArticlesStore } from '../../store/ArticlesStore/ArticlesStore';
+import { useStore } from '../../store/createStore';
 
 export const useArticlesListHooks = () => {
-	const { articles, getArticlesAction, getArticlesByTagAction } = useArticlesStore();
+	const { articlesStore } = useStore();
+	const { articles, getArticlesAction, getArticlesByTagAction } = articlesStore;
 	const [numberPage, setNumberPage] = useState<number>(1);
 	const [loading, setLoading] = useState<boolean>(false);
 	const { pathname } = useLocation();

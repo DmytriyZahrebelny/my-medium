@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { useAuthStore } from '../../store/AuthStore/AuthStore';
-import { useArticlesStore } from '../../store/ArticlesStore/ArticlesStore';
 import { useCommentsStore } from '../../store/CommentsStore/CommentsStore';
+import { useStore } from '../../store/createStore';
 import { IMatchParams } from './interfaces';
 
 export const useArticlePageHooks = (slug: string = '') => {
+	const { articlesStore, auth } = useStore();
+
 	const { comments, createCommentsAction, deleteCommentsAction } = useCommentsStore();
-	const { articles, getArticlesAction } = useArticlesStore();
-	const { user, token } = useAuthStore();
+	const { articles, getArticlesAction } = articlesStore;
+	const { user, token } = auth;
 	const { number } = useParams();
 	const { params }: IMatchParams = useRouteMatch();
 	const { handleSubmit, getFieldProps } = useFormik({

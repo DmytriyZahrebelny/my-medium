@@ -1,7 +1,7 @@
 import { types, flow, cast } from 'mobx-state-tree';
 import { authApi } from '../../api/authApi';
 import { settingsApi } from '../../api/settingsApi';
-import { ILoginResponse, ISignIn, ISignUp } from '../AuthStore/interfaces';
+import { ILoginResponse, ISignIn, ISignUp } from './interfaces';
 
 const authDataModel = types.model({
 	id: types.number,
@@ -21,27 +21,27 @@ export const AuthStore = types
 		token: types.maybeNull(types.string),
 		redirectTo: types.maybeNull(types.string),
 	})
-	.actions(store => ({
+	.actions(self => ({
 		signInAction: flow(function* signIn(data: ISignIn) {
 			const response: ILoginResponse | string[] = yield authApi.signIn(data);
 			if (response instanceof Array) {
-				store.errorsMesages = cast(response);
+				self.errorsMesages = cast(response);
 			} else {
-				store.user = response.user;
-				store.token = response.user.token;
-				store.errorsMesages = null;
-				store.redirectTo = '/';
+				self.user = response.user;
+				self.token = response.user.token;
+				self.errorsMesages = null;
+				self.redirectTo = '/';
 			}
 		}),
 		signUpAction: flow(function* signUp(data: ISignUp) {
 			const response: ILoginResponse | string[] = yield authApi.signUp(data);
 			if (response instanceof Array) {
-				store.errorsMesages = cast(response);
+				self.errorsMesages = cast(response);
 			} else {
-				store.user = response.user;
-				store.token = response.user.token;
-				store.errorsMesages = null;
-				store.redirectTo = '/';
+				self.user = response.user;
+				self.token = response.user.token;
+				self.errorsMesages = null;
+				self.redirectTo = '/';
 			}
 		}),
 		loginAction: flow(function* login() {
@@ -50,8 +50,8 @@ export const AuthStore = types
 				if (token) {
 					const res = yield authApi.getViewerData(token);
 
-					store.user = res.user;
-					store.token = res.user.token;
+					self.user = res.user;
+					self.token = res.user.token;
 				}
 			} catch (error) {
 				window.localStorage.removeItem('__token');
@@ -60,25 +60,25 @@ export const AuthStore = types
 		updateDataAction: flow(function* updateData(formData: any) {
 			const response: ILoginResponse | string[] = yield settingsApi.updateUserData(
 				formData,
-				store.token
+				self.token
 			);
 			if (response instanceof Array) {
-				store.errorsMesages = cast(response);
+				self.errorsMesages = cast(response);
 			} else {
-				store.user = response.user;
-				store.token = response.user.token;
-				store.errorsMesages = null;
-				store.redirectTo = '/posts';
+				self.user = response.user;
+				self.token = response.user.token;
+				self.errorsMesages = null;
+				self.redirectTo = '/posts';
 			}
 		}),
 		logoutAction() {
 			window.localStorage.removeItem('__token');
-			store.user = null;
-			store.token = null;
-			store.errorsMesages = null;
-			store.redirectTo = null;
+			self.user = null;
+			self.token = null;
+			self.errorsMesages = null;
+			self.redirectTo = null;
 		},
 		clearErrorsAction() {
-			store.errorsMesages = null;
+			self.errorsMesages = null;
 		},
 	}));

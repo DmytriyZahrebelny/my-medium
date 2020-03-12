@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import CommentsForm from './CommentsForm/CommentsForm';
 import ArticleComments from './ArticleComments/ArticleComments';
 import { IArticleData } from './interfaces';
@@ -36,4 +37,4 @@ const ArticlePage: React.FC = () => {
 	);
 };
 
-export default ArticlePage;
+export default observer(ArticlePage);

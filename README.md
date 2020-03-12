@@ -1,3 +1,5 @@
-React, Redux, TypeScripts, Formik, Sass
+React, Redux, Mobx TypeScripts, Formik, Sass
 
-In the branch context-store used global state with Context API and Hooks
+branch master used global state with Mobx state tree
+branch context-store used global state with Context API and Hooks
+branch redux-store used global state with Redux

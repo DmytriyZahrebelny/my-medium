@@ -12,6 +12,6 @@ export interface ICommentData {
 	};
 }
 
-export interface ICommentRequestData {
+export interface ICommentsResponseData {
 	comment: ICommentData;
 }

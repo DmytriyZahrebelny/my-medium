@@ -1,6 +1,6 @@
 import { types, flow, cast, getParent } from 'mobx-state-tree';
 import { commentsApi } from '../../api/commentsApi';
-import { ICommentData, ICommentRequestData, ICommentsState } from './interfaces';
+import { ICommentData, ICommentsResponseData, ICommentsState } from './interfaces';
 
 const CommentModel = types.model({
 	id: types.number,
@@ -32,7 +32,7 @@ export const CommentsStore = types
 		}),
 		createCommentsAction: flow(function* createComments(slug: string, comment: string) {
 			const { authStore } = getParent(self);
-			const response: ICommentRequestData = yield commentsApi.createComments(
+			const response: ICommentsResponseData = yield commentsApi.createComments(
 				slug,
 				comment,
 				authStore.token

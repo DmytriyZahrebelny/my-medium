@@ -10,6 +10,13 @@ const limit = (count: number, page: number): string =>
 
 const encode = encodeURIComponent;
 
+interface ICreatePost {
+	title: string;
+	description: string;
+	body: string;
+	tagList?: string;
+}
+
 export const articlesApi: any = {
 	async getArticles(page: number, token: string = ''): Promise<any> {
 		const response = await fetch(`/api/articles?${limit(10, page)}`, {

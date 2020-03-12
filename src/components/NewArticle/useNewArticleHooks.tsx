@@ -21,7 +21,7 @@ const validate = (value: any) => {
 	return errors;
 };
 
-export const useNewPostHooks = () => {
+export const useNewArticleHooks = () => {
 	const history = useHistory();
 	const { articlesStore } = useStore();
 	const { articleId, addNewPostAction } = articlesStore;

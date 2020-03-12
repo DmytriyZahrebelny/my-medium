@@ -4,8 +4,9 @@ import { IObserverData } from './interfaces';
 import { useStore } from '../../store/createStore';
 
 export const useArticlesListHooks = () => {
-	const { articlesStore } = useStore();
+	const { articlesStore, tagsStore } = useStore();
 	const { articles, getArticlesAction, getArticlesByTagAction } = articlesStore;
+	const { tags } = tagsStore;
 	const [numberPage, setNumberPage] = useState<number>(1);
 	const [loading, setLoading] = useState<boolean>(false);
 	const { pathname } = useLocation();
@@ -53,5 +54,7 @@ export const useArticlesListHooks = () => {
 		articles,
 		lastArticlesLinkRef,
 		numberPage,
+		tag,
+		tags,
 	};
 };

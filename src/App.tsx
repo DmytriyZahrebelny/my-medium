@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import Header from './components/Header/Header';
 import SignIn from './components/Auth/SignIn/SignIn';
 import SignUp from './components/Auth/SignUp/SignUp';
